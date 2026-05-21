@@ -6,7 +6,7 @@ export const STORE_INFO = {
   name: "Diamond Loft",
   tagline: "Elegance Crafted for You",
   description: "Handcrafted fine jewellery — earrings, pendants, bracelets & ear tops.",
-  whatsapp: "+923001234567",          // Replace with real WhatsApp number
+  whatsapp: "+923225578305",          // Replace with real WhatsApp number
   email: "diamondloft.pk@gmail.com",
   instagram: "https://instagram.com/diamondloftpk",
   facebook: "https://facebook.com/diamondloftpk",

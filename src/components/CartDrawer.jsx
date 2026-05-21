@@ -135,7 +135,7 @@ export default function CartDrawer({ onClose }) {
                     <label>Full Name *</label>
                     <input
                       required
-                      placeholder="e.g. Ayesha Khan"
+                      placeholder="e.g. Hassan Ali"
                       value={form.name}
                       onChange={field("name")}
                     />
