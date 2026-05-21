@@ -1,35 +1,42 @@
-import { BrowserRouter, Routes, Route, ScrollRestoration } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CartProvider, useCart } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import CartDrawer from "./components/CartDrawer";
 import Home from "./pages/Home";
 import CategoryPage from "./pages/CategoryPage";
 import ShopPage from "./pages/ShopPage";
 import ProductDetail from "./pages/ProductDetail";
 
-function ScrollToTop() {
-  if (typeof window !== "undefined") {
-    window.scrollTo(0, 0);
-  }
-  return null;
+function AppShell() {
+  const { isOpen, closeCart } = useCart();
+
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/"                   element={<Home />} />
+          <Route path="/shop"               element={<ShopPage />} />
+          <Route path="/category/:slug"     element={<CategoryPage />} />
+          <Route path="/product/:id"        element={<ProductDetail />} />
+          <Route path="*"                   element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+      <WhatsAppButton />
+      {isOpen && <CartDrawer onClose={closeCart} />}
+    </>
+  );
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/category/:slug" element={<CategoryPage />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          {/* Placeholder routes */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      <Footer />
-      <WhatsAppButton />
+      <CartProvider>
+        <AppShell />
+      </CartProvider>
     </BrowserRouter>
   );
 }

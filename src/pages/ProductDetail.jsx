@@ -2,15 +2,21 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ChevronRight, Star, Heart, ShoppingBag, MessageCircle, Truck, RefreshCw, Shield } from "lucide-react";
 import { getProductById, getCategoryBySlug, getProductsByCategory, STORE_INFO } from "../data/db";
+import { useCart } from "../context/CartContext";
 import ProductCard from "../components/ProductCard";
 import "./ProductDetail.css";
 
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80";
+
 export default function ProductDetail() {
   const { id } = useParams();
+  const { addToCart } = useCart();
   const product = getProductById(id);
   const [selectedImg, setSelectedImg] = useState(0);
-  const [qty, setQty] = useState(1);
-  const [wished, setWished] = useState(false);
+  const [qty, setQty]                 = useState(1);
+  const [wished, setWished]           = useState(false);
+  const [added, setAdded]             = useState(false);
 
   if (!product) {
     return (
@@ -22,7 +28,7 @@ export default function ProductDetail() {
   }
 
   const category = getCategoryBySlug(product.categoryId);
-  const related = getProductsByCategory(product.categoryId)
+  const related  = getProductsByCategory(product.categoryId)
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
@@ -31,7 +37,15 @@ export default function ProductDetail() {
     : null;
 
   const waNumber = STORE_INFO.whatsapp.replace(/\D/g, "");
-  const waMsg = encodeURIComponent(`Hi! I'm interested in "${product.name}" (PKR ${product.price.toLocaleString()}). Can you help?`);
+  const waMsg    = encodeURIComponent(
+    `Hi! I'm interested in "${product.name}" (PKR ${product.price.toLocaleString()}). Can you help?`
+  );
+
+  const handleAddToCart = () => {
+    addToCart(product, qty);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <div className="pd-page">
@@ -59,10 +73,9 @@ export default function ProductDetail() {
                 src={product.images[selectedImg] || product.image}
                 alt={product.name}
                 className="pd-gallery__img"
+                onError={(e) => { e.target.src = FALLBACK_IMG; }}
               />
-              {discount && (
-                <span className="pd-gallery__badge">-{discount}%</span>
-              )}
+              {discount && <span className="pd-gallery__badge">-{discount}%</span>}
               {!product.inStock && (
                 <div className="pd-gallery__oos-overlay">Out of Stock</div>
               )}
@@ -75,7 +88,11 @@ export default function ProductDetail() {
                     className={`pd-gallery__thumb${i === selectedImg ? " pd-gallery__thumb--active" : ""}`}
                     onClick={() => setSelectedImg(i)}
                   >
-                    <img src={src} alt={`View ${i + 1}`} />
+                    <img
+                      src={src}
+                      alt={`View ${i + 1}`}
+                      onError={(e) => { e.target.src = FALLBACK_IMG; }}
+                    />
                   </button>
                 ))}
               </div>
@@ -147,18 +164,17 @@ export default function ProductDetail() {
                     <button
                       className="qty-btn"
                       onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    >
-                      −
-                    </button>
+                    >−</button>
                     <span className="qty-val">{qty}</span>
-                    <button className="qty-btn" onClick={() => setQty((q) => q + 1)}>
-                      +
-                    </button>
+                    <button className="qty-btn" onClick={() => setQty((q) => q + 1)}>+</button>
                   </div>
 
-                  <button className="pd-add-btn">
+                  <button
+                    className={`pd-add-btn${added ? " pd-add-btn--added" : ""}`}
+                    onClick={handleAddToCart}
+                  >
                     <ShoppingBag size={18} />
-                    Add to Cart
+                    {added ? "Added!" : "Add to Cart"}
                   </button>
 
                   <button
@@ -202,9 +218,7 @@ export default function ProductDetail() {
               <h2 className="section-title">Related Pieces</h2>
             </div>
             <div className="pd-related__grid">
-              {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+              {related.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           </section>
         )}

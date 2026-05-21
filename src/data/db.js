@@ -3,14 +3,14 @@
 // ============================================================
 
 export const STORE_INFO = {
-  name: "Zareen Jewels",
+  name: "Diamond Loft",
   tagline: "Elegance Crafted for You",
   description: "Handcrafted fine jewellery — earrings, pendants, bracelets & ear tops.",
   whatsapp: "+923001234567",          // Replace with real WhatsApp number
-  email: "info@zareenjewels.com",     // Replace with real Gmail
-  instagram: "https://instagram.com/zareenjewels",
-  facebook: "https://facebook.com/zareenjewels",
-  pinterest: "https://pinterest.com/zareenjewels",
+  email: "diamondloft.pk@gmail.com",
+  instagram: "https://instagram.com/diamondloftpk",
+  facebook: "https://facebook.com/diamondloftpk",
+  pinterest: "https://pinterest.com/diamondloftpk",
 };
 
 export const CATEGORIES = [
@@ -43,7 +43,7 @@ export const CATEGORIES = [
     name: "Ear Tops",
     slug: "ear-tops",
     description: "Minimalist studs that speak volumes.",
-    image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=600&q=80",
     accent: "#a8927a",
   },
 ];
@@ -56,9 +56,9 @@ export const PRODUCTS = [
     name: "Golden Cascade Drop Earrings",
     price: 2499,
     originalPrice: 3200,
-    image: "https://images.unsplash.com/photo-1651897558498-2ccc5ccac06b?w=500&q=80",
+    image: "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=500&q=80",
     images: [
-      "https://images.unsplash.com/photo-1651897558498-2ccc5ccac06b?w=800&q=80",
+      "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=800&q=80",
       "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
     ],
     badge: "Sale",
@@ -200,9 +200,9 @@ export const PRODUCTS = [
     name: "Heart Birthstone Pendant",
     price: 1999,
     originalPrice: null,
-    image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=500&q=80",
+    image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=500&q=80",
     images: [
-      "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800&q=80",
+      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80",
     ],
     badge: "New",
     rating: 4.7,
@@ -324,9 +324,9 @@ export const PRODUCTS = [
     name: "Pearl & Gold Studs",
     price: 1299,
     originalPrice: null,
-    image: "https://images.unsplash.com/photo-1651897558498-2ccc5ccac06b?w=500&q=80",
+    image: "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=500&q=80",
     images: [
-      "https://images.unsplash.com/photo-1651897558498-2ccc5ccac06b?w=800&q=80",
+      "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=800&q=80",
     ],
     badge: "New",
     rating: 4.7,
@@ -364,9 +364,9 @@ export const PRODUCTS = [
     name: "Moonstone Cabochon Studs",
     price: 1799,
     originalPrice: null,
-    image: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=500&q=80",
+    image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=500&q=80",
     images: [
-      "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=800&q=80",
+      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80",
     ],
     badge: null,
     rating: 4.8,

@@ -255,6 +255,10 @@
   transform: translateY(-1px);
 }
 
+.pd-add-btn--added {
+  background: #27ae60;
+}
+
 .pd-wish-btn {
   width: 48px;
   height: 48px;

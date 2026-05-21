@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart, ShoppingBag, Star } from "lucide-react";
+import { useCart } from "../context/CartContext";
 import "./ProductCard.css";
 
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&q=80";
+
 export default function ProductCard({ product }) {
+  const { addToCart } = useCart();
   const [wished, setWished] = useState(false);
 
   const discount = product.originalPrice
@@ -14,7 +19,13 @@ export default function ProductCard({ product }) {
     <article className="pcard">
       <div className="pcard__img-wrap">
         <Link to={`/product/${product.id}`}>
-          <img src={product.image} alt={product.name} className="pcard__img" loading="lazy" />
+          <img
+            src={product.image}
+            alt={product.name}
+            className="pcard__img"
+            loading="lazy"
+            onError={(e) => { e.target.src = FALLBACK_IMG; }}
+          />
         </Link>
 
         {/* Badges */}
@@ -46,6 +57,7 @@ export default function ProductCard({ product }) {
           <button
             className="pcard__quick-add"
             disabled={!product.inStock}
+            onClick={() => product.inStock && addToCart(product, 1)}
             aria-label="Add to cart"
           >
             <ShoppingBag size={16} />

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ShoppingBag, Search, Menu, X, Heart } from "lucide-react";
-import { STORE_INFO } from "../data/db";
+import { useCart } from "../context/CartContext";
+import DiamondLoftLogo from "./DiamondLoftLogo";
 import "./Navbar.css";
 
-export default function Navbar({ cartCount = 0 }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+export default function Navbar() {
+  const { totalItems, openCart } = useCart();
+  const [menuOpen, setMenuOpen]   = useState(false);
+  const [scrolled, setScrolled]   = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
@@ -23,11 +25,11 @@ export default function Navbar({ cartCount = 0 }) {
   }, [location]);
 
   const navLinks = [
-    { label: "Home", to: "/" },
-    { label: "Earrings", to: "/category/earrings" },
-    { label: "Pendants", to: "/category/pendants" },
-    { label: "Bracelets", to: "/category/bracelets" },
-    { label: "Ear Tops", to: "/category/ear-tops" },
+    { label: "Home",          to: "/" },
+    { label: "Earrings",      to: "/category/earrings" },
+    { label: "Pendants",      to: "/category/pendants" },
+    { label: "Bracelets",     to: "/category/bracelets" },
+    { label: "Ear Tops",      to: "/category/ear-tops" },
     { label: "All Jewellery", to: "/shop" },
   ];
 
@@ -45,8 +47,8 @@ export default function Navbar({ cartCount = 0 }) {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="navbar__logo">
-            <span className="navbar__logo-serif">{STORE_INFO.name}</span>
+          <Link to="/" className="navbar__logo" aria-label="Diamond Loft — Home">
+            <DiamondLoftLogo width={148} />
           </Link>
 
           {/* Desktop nav */}
@@ -74,10 +76,16 @@ export default function Navbar({ cartCount = 0 }) {
             <Link to="/wishlist" className="navbar__icon-btn" aria-label="Wishlist">
               <Heart size={20} />
             </Link>
-            <Link to="/cart" className="navbar__icon-btn navbar__cart" aria-label="Cart">
+            <button
+              className="navbar__icon-btn navbar__cart"
+              onClick={openCart}
+              aria-label="Open cart"
+            >
               <ShoppingBag size={20} />
-              {cartCount > 0 && <span className="navbar__badge">{cartCount}</span>}
-            </Link>
+              {totalItems > 0 && (
+                <span className="navbar__badge">{totalItems}</span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -116,7 +124,6 @@ export default function Navbar({ cartCount = 0 }) {
         </div>
       )}
 
-      {/* Overlay */}
       {menuOpen && (
         <div className="mobile-nav__overlay" onClick={() => setMenuOpen(false)} />
       )}
