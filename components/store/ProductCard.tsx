@@ -65,9 +65,10 @@ export default function ProductCard({ product }: Props) {
             className="pcard__quick-add"
             onClick={() => addToCart(product, 1)}
             disabled={!product.inStock}
+            aria-label="Add to cart"
+            title="Add to cart"
           >
-            <ShoppingBag size={14} />
-            Quick Add
+            <ShoppingBag size={16} />
           </button>
         </div>
       </div>

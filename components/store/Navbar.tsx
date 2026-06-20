@@ -106,7 +106,7 @@ export default function Navbar() {
           </Link>
 
           <button
-            className="navbar__icon-btn"
+            className="navbar__icon-btn navbar__cart"
             aria-label={`Cart (${totalItems} items)`}
             onClick={openCart}
           >

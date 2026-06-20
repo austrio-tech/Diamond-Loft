@@ -3,23 +3,8 @@
 import { useRouter } from "next/navigation";
 import { formatPrice, paymentMethodLabel } from "@/lib/utils";
 import type { Order, OrderStatus, PaymentStatus } from "@/types";
+import StatusDropdown from "./StatusDropdown";
 import styles from "./OrdersTable.module.css";
-
-const STATUSES: OrderStatus[] = [
-  "pending",
-  "confirmed",
-  "shipped",
-  "delivered",
-  "cancelled",
-];
-
-const STATUS_LABELS: Record<OrderStatus, string> = {
-  pending: "Pending",
-  confirmed: "Confirmed",
-  shipped: "Shipped",
-  delivered: "Delivered",
-  cancelled: "Cancelled",
-};
 
 const PAYMENT_STATUS_COLORS: Record<PaymentStatus, { bg: string; color: string }> = {
   unpaid: { bg: "#fdf0f0", color: "#c0392b" },
@@ -133,19 +118,10 @@ export default function OrdersTable({ orders }: Props) {
                   )}
                 </td>
                 <td>
-                  <select
-                    className={`${styles.statusSelect} ${styles[order.status as keyof typeof styles] ?? ""}`}
-                    defaultValue={order.status}
-                    onChange={(e) =>
-                      handleStatusChange(order.id, e.target.value as OrderStatus)
-                    }
-                  >
-                    {STATUSES.map((s) => (
-                      <option key={s} value={s}>
-                        {STATUS_LABELS[s]}
-                      </option>
-                    ))}
-                  </select>
+                  <StatusDropdown
+                    value={order.status}
+                    onChange={(s) => handleStatusChange(order.id, s)}
+                  />
                 </td>
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
               </tr>

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, paymentMethodLabel } from "@/lib/utils";
+import OrderReceipt from "@/components/store/OrderReceipt";
 import type { OrderItem, OrderStatus, PaymentMethod, PaymentStatus } from "@/types";
 
 const STAGES: OrderStatus[] = ["pending", "confirmed", "shipped", "delivered"];
@@ -227,6 +228,23 @@ export default async function OrderTrackingPage({
                 </div>
               </div>
             </div>
+
+            {/* Receipt */}
+            <OrderReceipt
+              order={{
+                id: order.id,
+                createdAt: order.createdAt,
+                name: order.name,
+                phone: order.phone,
+                address: order.address,
+                city: order.city,
+                items: order.items,
+                total: order.total,
+                payMethod: order.payMethod,
+                paymentStatusLabel:
+                  PAYMENT_STATUS_LABELS[order.paymentStatus] ?? order.paymentStatus,
+              }}
+            />
 
             {/* Back to shop */}
             <Link href="/shop" className="btn btn--dark" style={{ textAlign: "center", justifyContent: "center" }}>
