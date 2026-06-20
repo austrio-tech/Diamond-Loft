@@ -80,7 +80,9 @@ Visit `/admin/login`. Default dev credentials (change immediately): `admin@diamo
 | `npm start` | Start production server |
 | `npm run lint` | Run ESLint |
 | `npm run db:push` | Apply schema to the database |
-| `npm run db:seed` | Seed initial data |
+| `npm run db:seed` | Seed initial data (also enables WAL) |
+| `npm run db:wal` | Enable SQLite WAL journal mode (run once per new DB) |
+| `npm run db:backup` | Create a consistent DB + uploads backup |
 | `npm run db:studio` | Open Prisma Studio (visual DB editor) |
 
 ## Deployment
@@ -93,11 +95,37 @@ On the server:
 npm install
 npm run build
 npm run db:push
+npm run db:wal                                   # enable WAL (durability/concurrency)
 ADMIN_EMAIL=... ADMIN_PASSWORD=... npm run db:seed
 npm start
 ```
 
-Back up by copying `prisma/dev.db` and `public/uploads/`.
+### Data persistence
+
+Your data lives in the SQLite file `prisma/dev.db`. It **persists across server
+restarts and crashes** — stopping/starting the app does not clear it. The only
+ways to lose data are: deleting the DB file, running `prisma migrate reset`, or
+deploying on a host with no persistent disk. (Re-running `db:seed` will reset the
+original 16 seed products to their seed values, but won't touch orders or any
+products/categories you added — avoid re-seeding a live store.)
+
+### Backups
+
+`npm run db:backup` creates a timestamped snapshot under `backups/` containing a
+consistent copy of the database (via SQLite `VACUUM INTO`, safe to run while the
+app is live) plus the `public/uploads/` folder. The latest 14 are kept
+(override with `BACKUP_KEEP`).
+
+Schedule it nightly with cron on your server:
+
+```cron
+# 2:00 AM daily — adjust the path to your app
+0 2 * * * cd /path/to/diamond-loft && /usr/bin/npm run db:backup >> /var/log/diamondloft-backup.log 2>&1
+```
+
+To restore: stop the app, copy the chosen backup's `dev.db` to `prisma/dev.db`
+and its `uploads/` to `public/uploads/`, then start the app. For off-site safety,
+sync the `backups/` folder to remote storage (e.g. `rsync`/`rclone`).
 
 ## Project Structure
 

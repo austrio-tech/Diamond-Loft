@@ -37,6 +37,11 @@ next-env.d.ts
 # database
 prisma/dev.db
 prisma/dev.db-journal
+prisma/dev.db-wal
+prisma/dev.db-shm
+
+# backups (local DB + uploads snapshots)
+/backups/
 
 # uploads (runtime — not committed, created on first upload)
 /public/uploads/

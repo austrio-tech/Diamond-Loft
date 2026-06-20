@@ -512,6 +512,9 @@ const sections = [
 async function main() {
   console.log("🌱 Seeding database...");
 
+  // Enable WAL journal mode (persists in the DB file; safe to run repeatedly).
+  await prisma.$queryRawUnsafe("PRAGMA journal_mode=WAL;");
+
   // Categories
   for (const c of categories) {
     await prisma.category.upsert({
