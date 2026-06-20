@@ -39,7 +39,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!hydrated.current) return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(ids)));
     } catch {
       // ignore
     }

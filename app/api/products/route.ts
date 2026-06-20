@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/adminAuth";
+import { auth } from "@/lib/auth";
 
 function parseImages<T extends { images: string }>(p: T) {
   return { ...p, images: JSON.parse(p.images) as string[] };
@@ -12,7 +13,10 @@ export async function GET(req: Request) {
   const q = searchParams.get("q");
   const sort = searchParams.get("sort") ?? "featured";
   const featured = searchParams.get("featured");
-  const includeArchived = searchParams.get("includeArchived") === "true";
+  // Archived products are only visible to authenticated admins.
+  const session = await auth();
+  const includeArchived =
+    !!session && searchParams.get("includeArchived") === "true";
 
   const orderBy =
     sort === "price-asc"

@@ -9,7 +9,13 @@
 
 ## Current Phase
 
-🔄 **Phase 1 — Project Scaffold & Configuration** (IN PROGRESS)
+✅ **ALL PHASES COMPLETE** — build green, lint clean, types pass, runtime smoke tests pass.
+
+### Verification summary
+- `npx tsc --noEmit` → 0 errors
+- `npm run build` → success, 25 routes, 18 static pages prerendered
+- `npm run lint` → no warnings or errors
+- Runtime smoke tests (production server): all pages 200, public API returns data, search/filter works, protected API returns 401 unauthenticated, admin redirects to login, full admin login→create-product flow works, price-tampering protection verified, all 7 info pages 200, home renders all 6 DB-driven sections.
 
 ---
 
@@ -165,7 +171,15 @@
 
 ## Issues / Blockers
 
-_None yet._
+_None blocking._
+
+### Security findings (automated review) — ALL RESOLVED
+
+| # | Severity | Issue | Fix |
+|---|----------|-------|-----|
+| 1 | HIGH | Hardcoded admin password in seed + logged cleartext | Seed now reads ADMIN_EMAIL/ADMIN_PASSWORD env vars; requires them in production; dev default warns; password no longer logged |
+| 2 | MEDIUM | `includeArchived` query param let public callers see archived products | Gated behind `auth()` session check; unauthenticated callers always get `archived:false` |
+| 3 | MEDIUM | Order total/prices trusted from client (price tampering) | Server re-fetches products by id, recomputes per-item price + total, validates payMethod enum |
 
 ---
 

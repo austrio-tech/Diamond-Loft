@@ -551,15 +551,35 @@ async function main() {
   }
   console.log(`✓ ${sections.length} sections`);
 
-  // Admin user
-  const email = "admin@diamondloft.pk";
-  const password = await bcrypt.hash("changeme123", 12);
+  // Admin user — credentials come from env. In dev, a default is used and a
+  // loud warning is printed. The cleartext password is never logged.
+  const email = process.env.ADMIN_EMAIL ?? "admin@diamondloft.pk";
+  const rawPassword = process.env.ADMIN_PASSWORD;
+  const isProd = process.env.NODE_ENV === "production";
+
+  if (isProd && !rawPassword) {
+    throw new Error(
+      "ADMIN_PASSWORD env var is required when seeding in production."
+    );
+  }
+
+  const password = rawPassword ?? "changeme123";
+  const hash = await bcrypt.hash(password, 12);
   await prisma.adminUser.upsert({
     where: { email },
     update: {},
-    create: { email, password },
+    create: { email, password: hash },
   });
-  console.log(`✓ admin user: ${email} (password: changeme123)`);
+
+  if (!rawPassword) {
+    console.log(
+      `⚠️  admin user seeded with DEV default password for ${email}.\n` +
+        `    Set ADMIN_EMAIL / ADMIN_PASSWORD env vars for a custom credential,\n` +
+        `    and change this password immediately after first login.`
+    );
+  } else {
+    console.log(`✓ admin user: ${email} (password from ADMIN_PASSWORD)`);
+  }
 
   console.log("✅ Seed complete.");
 }

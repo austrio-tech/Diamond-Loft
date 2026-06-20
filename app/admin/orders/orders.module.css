@@ -1,0 +1,33 @@
+.page {
+  padding: 32px;
+}
+
+.heading {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: var(--charcoal);
+  margin-bottom: 24px;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 6px 16px;
+  border-radius: 99px;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.tabActive {
+  background: var(--gold);
+  color: white;
+  border-color: var(--gold);
+}
