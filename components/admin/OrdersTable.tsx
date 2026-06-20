@@ -31,10 +31,6 @@ interface Props {
 export default function OrdersTable({ orders }: Props) {
   const router = useRouter();
 
-  if (orders.length === 0) {
-    return <p style={{ color: "var(--muted)", padding: "24px 0" }}>No orders found.</p>;
-  }
-
   return (
     <div className={styles.tableWrap}>
       <table className={styles.table}>
@@ -54,6 +50,13 @@ export default function OrdersTable({ orders }: Props) {
           </tr>
         </thead>
         <tbody>
+          {orders.length === 0 && (
+            <tr>
+              <td colSpan={11} style={{ textAlign: "center", color: "var(--muted)", padding: "32px 0" }}>
+                No orders found.
+              </td>
+            </tr>
+          )}
           {orders.map((order) => {
             const totalQty = order.items.reduce((s, i) => s + i.qty, 0);
             const psColors = PAYMENT_STATUS_COLORS[order.paymentStatus];

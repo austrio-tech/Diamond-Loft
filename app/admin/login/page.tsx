@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import PasswordInput from "@/components/admin/PasswordInput";
 import styles from "./login.module.css";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,12 +22,14 @@ export default function AdminLoginPage() {
       redirect: false,
     });
 
-    setLoading(false);
-
     if (res?.error) {
       setError("Invalid email or password");
+      setLoading(false);
     } else {
-      router.push("/admin");
+      // Full navigation so the server admin layout re-runs with the new
+      // session and renders the sidebar (a client router.push would keep the
+      // already-mounted shell-less layout until a manual refresh).
+      window.location.href = "/admin";
     }
   }
 
