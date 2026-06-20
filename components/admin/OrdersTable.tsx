@@ -119,7 +119,7 @@ export default function OrdersTable({ orders }: Props) {
                   </div>
                 </td>
                 <td>
-                  {order.receiptUrl?.startsWith("/uploads/") ? (
+                  {order.receiptUrl?.startsWith("/uploads/receipts/") ? (
                     <a href={order.receiptUrl} target="_blank" rel="noopener noreferrer" title="View receipt">
                       <img
                         src={order.receiptUrl}
