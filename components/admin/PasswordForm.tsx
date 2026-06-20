@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
+import PasswordInput from "./PasswordInput";
 import styles from "./PasswordForm.module.css";
 
 export default function PasswordForm() {
@@ -61,12 +62,11 @@ export default function PasswordForm() {
           <label className={styles.label} htmlFor="current">
             Current Password
           </label>
-          <input
+          <PasswordInput
             id="current"
-            type="password"
-            className={styles.input}
+            inputClassName={styles.input}
             value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
+            onChange={setCurrentPassword}
             autoComplete="current-password"
             required
           />
@@ -76,12 +76,11 @@ export default function PasswordForm() {
           <label className={styles.label} htmlFor="new">
             New Password
           </label>
-          <input
+          <PasswordInput
             id="new"
-            type="password"
-            className={styles.input}
+            inputClassName={styles.input}
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={setNewPassword}
             autoComplete="new-password"
             required
           />
@@ -92,12 +91,11 @@ export default function PasswordForm() {
           <label className={styles.label} htmlFor="confirm">
             Confirm New Password
           </label>
-          <input
+          <PasswordInput
             id="confirm"
-            type="password"
-            className={styles.input}
+            inputClassName={styles.input}
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={setConfirmPassword}
             autoComplete="new-password"
             required
           />

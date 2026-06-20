@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import PasswordInput from "@/components/admin/PasswordInput";
 import styles from "./login.module.css";
 
 export default function AdminLoginPage() {
@@ -61,12 +62,11 @@ export default function AdminLoginPage() {
             <label htmlFor="password" className={styles.label}>
               Password
             </label>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
+              onChange={setPassword}
+              inputClassName={styles.input}
               placeholder="••••••••"
               required
               autoComplete="current-password"
