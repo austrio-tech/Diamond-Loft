@@ -21,59 +21,10 @@
   border-bottom: 1px solid var(--border);
 }
 
-.table tr:hover td {
+.clickableRow {
+  cursor: pointer;
+}
+
+.clickableRow:hover td {
   background: var(--cream);
-}
-
-.statusSelect {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 8px;
-  font-family: inherit;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
-
-.statusSelect.pending {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.statusSelect.confirmed {
-  background: #cfe2ff;
-  color: #084298;
-}
-
-.statusSelect.shipped {
-  background: #e2d9f3;
-  color: #432874;
-}
-
-.statusSelect.delivered {
-  background: #d1e7dd;
-  color: #0a3622;
-}
-
-.statusSelect.cancelled {
-  background: #f8d7da;
-  color: #842029;
-}
-
-/* Confirm payment button */
-.confirmBtn {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 5px;
-  background: var(--gold);
-  color: #fff;
-  white-space: nowrap;
-  transition: background 0.2s;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-}
-
-.confirmBtn:hover {
-  background: var(--gold-dark);
 }

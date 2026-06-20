@@ -132,6 +132,7 @@ export default function OrderReceipt({ order }: { order: ReceiptData }) {
       );
 
       doc.save(`DiamondLoft-Receipt-${order.id}.pdf`);
+      setOpen(false);
     } finally {
       setDownloading(false);
     }

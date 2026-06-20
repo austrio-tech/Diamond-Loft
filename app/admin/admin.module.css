@@ -1,12 +1,4 @@
-.wrapper {
-  display: flex;
-  min-height: 100vh;
-}
-
-.main {
-  flex: 1;
-  margin-left: 240px;
-  background-color: var(--cream);
-  padding: 32px;
-  min-height: 100vh;
-}
+/*
+  Layout styles have moved to components/admin/AdminShell.module.css.
+  This file is kept as a stub so any existing import doesn't break.
+*/

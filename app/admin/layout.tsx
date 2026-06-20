@@ -1,6 +1,5 @@
 import { auth } from "@/lib/auth";
-import AdminSidebar from "@/components/admin/AdminSidebar";
-import styles from "./admin.module.css";
+import AdminShell from "@/components/admin/AdminShell";
 
 export default async function AdminLayout({
   children,
@@ -13,10 +12,5 @@ export default async function AdminLayout({
     return <>{children}</>;
   }
 
-  return (
-    <div className={styles.wrapper}>
-      <AdminSidebar />
-      <main className={styles.main}>{children}</main>
-    </div>
-  );
+  return <AdminShell>{children}</AdminShell>;
 }

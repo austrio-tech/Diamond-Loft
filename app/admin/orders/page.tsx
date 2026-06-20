@@ -31,10 +31,18 @@ export default async function OrdersPage({
       ? { status: status as OrderStatus }
       : {};
 
-  const rawOrders = await prisma.order.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-  });
+  const [rawOrders, statusGroups] = await Promise.all([
+    prisma.order.findMany({ where, orderBy: { createdAt: "desc" } }),
+    prisma.order.groupBy({ by: ["status"], _count: { id: true } }),
+  ]);
+
+  // Build counts map
+  const countMap: Record<string, number> = {};
+  let totalCount = 0;
+  for (const g of statusGroups) {
+    countMap[g.status] = g._count.id;
+    totalCount += g._count.id;
+  }
 
   const orders: Order[] = rawOrders.map((o) => ({
     ...o,
@@ -54,7 +62,7 @@ export default async function OrdersPage({
           href="/admin/orders"
           className={`${styles.tab} ${!status ? styles.tabActive : ""}`}
         >
-          All ({rawOrders.length})
+          All ({totalCount})
         </Link>
         {STATUSES.map((s) => (
           <Link
@@ -62,7 +70,7 @@ export default async function OrdersPage({
             href={`/admin/orders?status=${s}`}
             className={`${styles.tab} ${status === s ? styles.tabActive : ""}`}
           >
-            {STATUS_LABELS[s]}
+            {STATUS_LABELS[s]} ({countMap[s] ?? 0})
           </Link>
         ))}
       </nav>

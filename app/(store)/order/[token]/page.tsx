@@ -18,7 +18,7 @@ const STAGE_LABELS: Record<OrderStatus, string> = {
 const PAYMENT_STATUS_LABELS: Record<string, string> = {
   unpaid: "Awaiting Payment",
   paid: "Payment Confirmed",
-  cod: "Cash on Delivery",
+  cod: "Pay on Delivery",
 };
 
 export async function generateMetadata({
