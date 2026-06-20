@@ -59,6 +59,24 @@ export async function POST(req: Request) {
       );
     }
 
+    const isCod = body.payMethod === "cod";
+
+    // SECURITY: receiptUrl must be an internal upload path produced by our
+    // /api/upload/receipt endpoint — never a client-controlled arbitrary URL
+    // (prevents stored XSS / phishing via javascript: or external links).
+    const RECEIPT_RE =
+      /^\/uploads\/receipts\/[A-Za-z0-9._-]+\.(jpg|jpeg|png|webp|gif|avif)$/;
+    const receiptUrl =
+      typeof body.receiptUrl === "string" && RECEIPT_RE.test(body.receiptUrl)
+        ? body.receiptUrl
+        : null;
+    if (!isCod && body.receiptUrl && !receiptUrl) {
+      return NextResponse.json(
+        { error: "Invalid receipt URL" },
+        { status: 400 }
+      );
+    }
+
     // SECURITY: recompute prices/total server-side; never trust the client.
     const productIds = body.items.map((i) => Number(i.productId));
     const dbProducts = await prisma.product.findMany({
@@ -86,7 +104,6 @@ export async function POST(req: Request) {
       total += product.price * qty;
     }
 
-    const isCod = body.payMethod === "cod";
     const order = await prisma.order.create({
       data: {
         name: body.name,
@@ -97,7 +114,7 @@ export async function POST(req: Request) {
         total,
         payMethod: body.payMethod,
         paymentStatus: isCod ? "cod" : "unpaid",
-        receiptUrl: !isCod ? (body.receiptUrl ?? null) : null,
+        receiptUrl: !isCod ? receiptUrl : null,
       },
     });
 
