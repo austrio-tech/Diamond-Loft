@@ -121,7 +121,12 @@ export default function Navbar() {
       {/* Search bar */}
       {searchOpen && (
         <div className="navbar__search container">
-          <form onSubmit={handleSearchSubmit} role="search">
+          <form
+            onSubmit={handleSearchSubmit}
+            role="search"
+            className="navbar__search-form"
+          >
+            <Search size={18} className="navbar__search-icon" />
             <input
               type="search"
               value={query}
@@ -129,9 +134,14 @@ export default function Navbar() {
               placeholder="Search jewellery..."
               autoFocus
               aria-label="Search jewellery"
+              className="navbar__search-input"
             />
-            <button type="submit" aria-label="Submit search">
-              <Search size={18} />
+            <button
+              type="submit"
+              className="navbar__search-submit"
+              aria-label="Submit search"
+            >
+              Search
             </button>
           </form>
         </div>
