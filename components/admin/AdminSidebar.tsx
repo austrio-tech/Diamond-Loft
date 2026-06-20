@@ -9,6 +9,7 @@ import {
   Tag,
   ShoppingCart,
   Layers,
+  Settings,
   LogOut,
 } from "lucide-react";
 import styles from "./AdminSidebar.module.css";
@@ -44,6 +45,11 @@ const navItems: NavItem[] = [
     label: "Sections",
     href: "/admin/sections",
     icon: <Layers size={18} />,
+  },
+  {
+    label: "Settings",
+    href: "/admin/settings",
+    icon: <Settings size={18} />,
   },
 ];
 

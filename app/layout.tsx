@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <CartProvider>
           <WishlistProvider>{children}</WishlistProvider>
         </CartProvider>
