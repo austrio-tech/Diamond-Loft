@@ -6,9 +6,15 @@ import {
   buildOrderWhatsAppMessage,
   STORE_INFO,
 } from "@/lib/utils";
+import { sendOrderNotification } from "@/lib/email";
 import type { CreateOrderPayload, OrderItem, PaymentMethod } from "@/types";
 
-const VALID_PAY_METHODS: PaymentMethod[] = ["bank", "mobile"];
+const VALID_PAY_METHODS: PaymentMethod[] = [
+  "cod",
+  "bank",
+  "jazzcash",
+  "easypaisa",
+];
 
 export async function GET(req: Request) {
   try {
@@ -32,7 +38,6 @@ export async function POST(req: Request) {
   try {
     const body: CreateOrderPayload = await req.json();
 
-    // Validate required fields
     if (
       !body.name ||
       !body.phone ||
@@ -47,7 +52,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Validate payment method against allowed enum
     if (!VALID_PAY_METHODS.includes(body.payMethod)) {
       return NextResponse.json(
         { error: "Invalid payment method" },
@@ -55,8 +59,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // SECURITY: never trust client-supplied prices. Re-fetch each product
-    // from the DB and recompute prices/total server-side.
+    // SECURITY: recompute prices/total server-side; never trust the client.
     const productIds = body.items.map((i) => Number(i.productId));
     const dbProducts = await prisma.product.findMany({
       where: { id: { in: productIds }, archived: false },
@@ -74,16 +77,16 @@ export async function POST(req: Request) {
         );
       }
       const qty = Math.max(1, Math.floor(Number(item.qty) || 1));
-      const lineItem: OrderItem = {
+      verifiedItems.push({
         productId: product.id,
         name: product.name,
         price: product.price,
         qty,
-      };
-      verifiedItems.push(lineItem);
+      });
       total += product.price * qty;
     }
 
+    const isCod = body.payMethod === "cod";
     const order = await prisma.order.create({
       data: {
         name: body.name,
@@ -93,9 +96,12 @@ export async function POST(req: Request) {
         items: JSON.stringify(verifiedItems),
         total,
         payMethod: body.payMethod,
+        paymentStatus: isCod ? "cod" : "unpaid",
+        receiptUrl: !isCod ? (body.receiptUrl ?? null) : null,
       },
     });
 
+    // Notify the store (email + WhatsApp link for the customer).
     const message = buildOrderWhatsAppMessage({
       name: body.name,
       phone: body.phone,
@@ -106,6 +112,11 @@ export async function POST(req: Request) {
       payMethod: body.payMethod,
     });
     const whatsappUrl = buildWhatsAppOrderUrl(STORE_INFO.whatsapp, message);
+
+    await sendOrderNotification({
+      subject: `New Order #${order.id} — ${STORE_INFO.name} (PKR ${total.toLocaleString()})`,
+      text: message,
+    });
 
     return NextResponse.json(
       { order: { ...order, items: verifiedItems }, whatsappUrl },

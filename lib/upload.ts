@@ -4,7 +4,10 @@ import { randomUUID } from "crypto";
 
 const ALLOWED = ["jpg", "jpeg", "png", "webp", "gif", "avif"];
 
-export async function saveUpload(file: File): Promise<string> {
+export async function saveUpload(
+  file: File,
+  subfolder?: string
+): Promise<string> {
   const ext = (file.name.split(".").pop() ?? "jpg").toLowerCase();
   if (!ALLOWED.includes(ext)) {
     throw new Error("Unsupported file type");
@@ -12,8 +15,9 @@ export async function saveUpload(file: File): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   const filename = `${randomUUID()}.${ext}`;
-  const uploadDir = join(process.cwd(), "public", "uploads");
+  const rel = subfolder ? `uploads/${subfolder}` : "uploads";
+  const uploadDir = join(process.cwd(), "public", rel);
   await mkdir(uploadDir, { recursive: true });
   await writeFile(join(uploadDir, filename), buffer);
-  return `/uploads/${filename}`;
+  return `/${rel}/${filename}`;
 }

@@ -49,17 +49,20 @@ model Category {
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  name      String
-  phone     String
-  address   String
-  city      String
-  items     String // JSON array stored as string
-  total     Float
-  payMethod String
-  status    String   @default("pending")
-  notes     String?
-  createdAt DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  token         String   @unique @default(uuid()) // public tracking id (not guessable)
+  name          String
+  phone         String
+  address       String
+  city          String
+  items         String // JSON array stored as string
+  total         Float
+  payMethod     String // "cod" | "bank" | "jazzcash" | "easypaisa"
+  paymentStatus String   @default("unpaid") // "unpaid" | "paid" (admin-confirmed) | "cod"
+  receiptUrl    String? // uploaded payment receipt for manual payments
+  status        String   @default("pending") // fulfilment: pending|confirmed|shipped|delivered|cancelled
+  notes         String?
+  createdAt     DateTime @default(now())
 
   @@index([status])
   @@index([createdAt])

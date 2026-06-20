@@ -54,8 +54,7 @@ export function buildOrderWhatsAppMessage(order: {
     )
     .join("\n");
 
-  const payLabel =
-    order.payMethod === "bank" ? "Bank Transfer" : "JazzCash / EasyPaisa";
+  const payLabel = paymentMethodLabel(order.payMethod);
 
   return `🛍️ New Order — Diamond Loft
 
@@ -70,6 +69,21 @@ Total: PKR ${order.total.toLocaleString()}
 Payment: ${payLabel}
 
 Please confirm this order.`;
+}
+
+export function paymentMethodLabel(method: string): string {
+  switch (method) {
+    case "cod":
+      return "Cash on Delivery";
+    case "bank":
+      return "Bank Transfer";
+    case "jazzcash":
+      return "JazzCash";
+    case "easypaisa":
+      return "EasyPaisa";
+    default:
+      return method;
+  }
 }
 
 export function validatePakistaniPhone(phone: string): boolean {

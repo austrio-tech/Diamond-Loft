@@ -34,3 +34,27 @@ export async function PUT(
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await requireAdmin();
+    const { id } = await params;
+    const count = await prisma.product.count({ where: { categoryId: id } });
+    if (count > 0) {
+      return NextResponse.json(
+        {
+          error: `Cannot delete: ${count} product(s) still use this category. Reassign or delete them first.`,
+        },
+        { status: 400 }
+      );
+    }
+    await prisma.category.delete({ where: { id } });
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    if (err instanceof Response) return err;
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}

@@ -207,12 +207,15 @@ ul { list-style: none; }
   z-index: 99;
   padding: 32px 24px;
   overflow-y: auto;
-  animation: slideIn 0.25s ease;
+  box-shadow: 2px 0 28px rgba(44, 44, 44, 0.14);
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 0.28s ease, visibility 0.28s ease;
 }
 
-@keyframes slideIn {
-  from { transform: translateX(-100%); opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
+.mobile-nav--open {
+  transform: translateX(0);
+  visibility: visible;
 }
 
 .mobile-nav__links {
@@ -237,6 +240,11 @@ ul { list-style: none; }
   color: var(--gold-dark);
 }
 
+.mobile-nav__link--active {
+  background: var(--soft);
+  color: var(--gold-dark);
+}
+
 .mobile-nav__overlay {
   position: fixed;
   inset: 0;
@@ -254,6 +262,12 @@ ul { list-style: none; }
 @media (max-width: 900px) {
   .navbar__links { display: none; }
   .navbar__hamburger { display: flex; }
+}
+
+/* Mobile nav is irrelevant on desktop — never show it there */
+@media (min-width: 901px) {
+  .mobile-nav,
+  .mobile-nav__overlay { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -2414,4 +2428,159 @@ ul { list-style: none; }
 @media (max-width: 560px) {
   .pd-info__details { grid-template-columns: 1fr; }
   .pd-related__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+}
+
+/* ===================== CheckoutPage ===================== */
+/* Added for dedicated /checkout page — on-brand globals */
+
+.co-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  box-shadow: var(--shadow);
+}
+
+.co-card__title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 20px;
+}
+
+.co-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.co-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.co-input {
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--charcoal);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.co-input:focus { border-color: var(--gold); }
+.co-input::placeholder { color: #bbb5ad; }
+.co-input--error { border-color: #c0392b !important; }
+
+.co-error {
+  font-size: 12px;
+  color: #c0392b;
+  margin-top: 2px;
+}
+
+.co-pay-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.co-pay-option:hover {
+  border-color: var(--gold-light);
+}
+
+.co-pay-option--on {
+  border-color: var(--gold);
+  background: #fdf8f1;
+}
+
+.co-pay-option__icon { font-size: 24px; }
+
+.co-pay-option__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+.co-pay-option__sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.co-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1.5px dashed var(--gold);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold-dark);
+  background: #fdf8f1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.co-upload-btn:hover:not(:disabled) {
+  background: var(--gold-light);
+  border-style: solid;
+}
+
+.co-upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.co-place-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.co-place-btn:hover:not(:disabled) {
+  background: var(--gold-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(160, 121, 61, 0.35);
+}
+
+.co-place-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .co-card { padding: 20px; }
+}
+
+@media (max-width: 760px) {
+  /* Checkout grid goes single column on mobile */
+  .co-checkout-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

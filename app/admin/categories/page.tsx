@@ -1,5 +1,6 @@
 import { getCategories } from "@/lib/data";
 import CategoryForm from "@/components/admin/CategoryForm";
+import CategoryTable from "@/components/admin/CategoryTable";
 import styles from "./categories.module.css";
 
 export default async function CategoriesPage() {
@@ -14,34 +15,7 @@ export default async function CategoriesPage() {
         </span>
       </h1>
 
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Slug</th>
-              <th>Products</th>
-              <th>Accent</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((cat) => (
-              <tr key={cat.id}>
-                <td>{cat.name}</td>
-                <td>{cat.slug}</td>
-                <td>{cat._count?.products ?? 0}</td>
-                <td>
-                  <span
-                    className={styles.colorSwatch}
-                    style={{ backgroundColor: cat.accent }}
-                    title={cat.accent}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <CategoryTable categories={categories} />
 
       <div className={styles.addSection}>
         <p className={styles.addTitle}>+ Add Category</p>

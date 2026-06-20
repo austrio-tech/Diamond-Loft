@@ -78,12 +78,8 @@ export async function DELETE(
   try {
     await requireAdmin();
     const { id } = await params;
-    // Soft delete — archive instead of hard delete
-    const product = await prisma.product.update({
-      where: { id: Number(id) },
-      data: { archived: true },
-    });
-    return NextResponse.json(parseImages(product));
+    await prisma.product.delete({ where: { id: Number(id) } });
+    return NextResponse.json({ ok: true });
   } catch (err) {
     if (err instanceof Response) return err;
     return NextResponse.json({ error: "Server error" }, { status: 500 });

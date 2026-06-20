@@ -1,7 +1,8 @@
 // ── Primitives ────────────────────────────────────────────────
 export type BadgeType = "Sale" | "New" | "Bestseller" | "Premium";
 export type SortOption = "featured" | "price-asc" | "price-desc" | "rating";
-export type PaymentMethod = "bank" | "mobile";
+export type PaymentMethod = "cod" | "bank" | "jazzcash" | "easypaisa";
+export type PaymentStatus = "unpaid" | "paid" | "cod";
 export type OrderStatus =
   | "pending"
   | "confirmed"
@@ -73,6 +74,7 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
+  token: string;
   name: string;
   phone: string;
   address: string;
@@ -80,6 +82,8 @@ export interface Order {
   items: OrderItem[];
   total: number;
   payMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  receiptUrl: string | null;
   status: OrderStatus;
   notes: string | null;
   createdAt: string;
@@ -93,6 +97,7 @@ export interface CreateOrderPayload {
   items: OrderItem[];
   total: number;
   payMethod: PaymentMethod;
+  receiptUrl?: string | null;
 }
 
 export interface CreateOrderResponse {

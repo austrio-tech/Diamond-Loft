@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import OrdersTable from "@/components/admin/OrdersTable";
-import type { Order, OrderStatus, OrderItem, PaymentMethod } from "@/types";
+import type { Order, OrderStatus, OrderItem, PaymentMethod, PaymentStatus } from "@/types";
 import styles from "./orders.module.css";
 
 const STATUSES: OrderStatus[] = [
@@ -40,6 +40,7 @@ export default async function OrdersPage({
     ...o,
     items: JSON.parse(o.items as unknown as string) as OrderItem[],
     payMethod: o.payMethod as PaymentMethod,
+    paymentStatus: o.paymentStatus as PaymentStatus,
     status: o.status as OrderStatus,
     createdAt: o.createdAt.toISOString(),
   }));

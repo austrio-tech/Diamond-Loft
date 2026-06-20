@@ -57,7 +57,8 @@ export default function Navbar() {
   }
 
   return (
-    <header className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
+    <>
+      <header className={`navbar${scrolled ? " navbar--scrolled" : ""}`}>
       <div className="navbar__inner container">
         {/* Hamburger */}
         <button
@@ -135,8 +136,10 @@ export default function Navbar() {
           </form>
         </div>
       )}
+      </header>
 
-      {/* Mobile drawer overlay */}
+      {/* Mobile drawer overlay — rendered OUTSIDE <header> because the navbar's
+          backdrop-filter creates a containing block that would clip fixed children */}
       {menuOpen && (
         <div
           className="mobile-nav__overlay"
@@ -156,7 +159,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`navbar__link${pathname === link.href ? " navbar__link--active" : ""}`}
+              className={`mobile-nav__link${pathname === link.href ? " mobile-nav__link--active" : ""}`}
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -164,6 +167,6 @@ export default function Navbar() {
           ))}
         </div>
       </nav>
-    </header>
+    </>
   );
 }
