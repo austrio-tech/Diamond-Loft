@@ -8,6 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { overlay, drawerLeft } from "@/lib/motion";
 import ThemeToggle from "@/components/ThemeToggle";
 import {
+  AdminRealtimeProvider,
+  NotificationBell,
+} from "@/components/admin/AdminRealtime";
+import {
   LayoutDashboard,
   Package,
   Tag,
@@ -116,16 +120,20 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   }, [pathname, closeSidebar]);
 
   return (
+    <AdminRealtimeProvider>
     <div className="flex min-h-screen">
       {/* Desktop sidebar — fixed, visible ≥901px */}
       <aside className="max-[900px]:hidden fixed left-0 top-0 w-60 h-screen bg-ink-deep flex flex-col z-[100] overflow-y-auto">
-        <div className="px-6 py-7 border-b border-white/10">
-          <span className="font-serif text-xl font-bold tracking-widest text-gold">
-            Diamond Loft
-          </span>
-          <p className="text-[10px] uppercase tracking-[0.25em] text-gold-light/40 mt-0.5">
-            Admin
-          </p>
+        <div className="px-6 py-7 border-b border-white/10 flex items-start justify-between">
+          <div>
+            <span className="font-serif text-xl font-bold tracking-widest text-gold">
+              Diamond Loft
+            </span>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-gold-light/40 mt-0.5">
+              Admin
+            </p>
+          </div>
+          <NotificationBell />
         </div>
         <NavLinks isActive={isActive} />
         <SidebarFooter onSignOut={() => signOut({ callbackUrl: "/admin/login" })} />
@@ -141,9 +149,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         >
           <Menu size={22} />
         </button>
-        <span className="font-serif text-lg font-bold tracking-widest text-gold">
+        <span className="flex-1 font-serif text-lg font-bold tracking-widest text-gold">
           Diamond Loft
         </span>
+        <NotificationBell />
       </header>
 
       {/* Mobile drawer + backdrop */}
@@ -199,5 +208,6 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         {children}
       </main>
     </div>
+    </AdminRealtimeProvider>
   );
 }

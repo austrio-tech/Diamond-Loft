@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, paymentMethodLabel } from "@/lib/utils";
 import OrderReceipt from "@/components/store/OrderReceipt";
+import OrderLiveUpdater from "@/components/store/OrderLiveUpdater";
 import Reveal from "@/components/motion/Reveal";
 import type { OrderItem, OrderStatus, PaymentMethod, PaymentStatus } from "@/types";
 
@@ -57,6 +58,7 @@ export default async function OrderTrackingPage({
 
   return (
     <div className="bg-page min-h-screen pb-20">
+      <OrderLiveUpdater token={order.token} />
       {/* Header banner */}
       {isCancelled ? (
         <div className="bg-red-50 border-b border-red-200 py-12 md:pt-14 md:pb-10">

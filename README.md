@@ -89,6 +89,14 @@ Visit `/admin/login`. Default dev credentials (change immediately): `admin@diamo
 
 This app uses **SQLite** and **local file uploads**, so it must run on a host with a **persistent disk** — e.g. Railway, a DigitalOcean Droplet, Render (with a disk), or your own VPS. Serverless platforms (Vercel/Netlify) are **not** compatible because they have no persistent filesystem.
 
+### Real-time updates (SSE)
+
+Live order notifications (admin) and live order tracking (customer) use **Server-Sent Events** at `/api/admin/events` and `/api/track/[token]`. These are long-lived streaming responses, so the reverse proxy must **not buffer** them:
+
+- **Nginx:** add `proxy_buffering off;` (and `proxy_cache off;`) for these locations — the app also sends `X-Accel-Buffering: no`. Do not gzip `text/event-stream`.
+- **Caddy:** works out of the box (no buffering of streams).
+- The in-process event bus assumes a **single Node instance**. If you run multiple instances or pm2 **cluster** mode, swap the bus in `lib/events.ts` for a Redis pub/sub adapter.
+
 On the server:
 
 ```bash
