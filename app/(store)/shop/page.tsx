@@ -88,7 +88,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
             </p>
           </div>
         ) : (
-          <Stagger className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 content-start">
+          <Stagger inView={false} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 content-start">
             {filteredWithSearch.map((p) => (
               <StaggerItem key={p.id}>
                 <ProductCard product={p} />

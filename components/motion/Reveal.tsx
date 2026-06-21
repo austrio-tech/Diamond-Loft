@@ -13,11 +13,16 @@ interface Props {
   /** render element tag */
   as?: "div" | "section" | "article" | "li" | "span";
   once?: boolean;
+  /**
+   * When true (default) the entrance triggers on scroll-into-view. Set false
+   * for primary content that mounts already in view (e.g. after a client-side
+   * navigation/filter) so it animates on mount and never gets stuck hidden.
+   */
+  inView?: boolean;
 }
 
 /**
- * Fades/slides content in when it scrolls into view. Safe to wrap around
- * server-rendered children (this is the client boundary).
+ * Fades/slides content in. Safe to wrap around server-rendered children.
  */
 export default function Reveal({
   children,
@@ -26,16 +31,19 @@ export default function Reveal({
   delay = 0,
   as = "div",
   once = true,
+  inView = true,
 }: Props) {
   const MotionTag = motion[as];
+  const trigger = inView
+    ? { whileInView: "show", viewport: { once, amount: 0.2 } }
+    : { animate: "show" };
   return (
     <MotionTag
       className={className}
       variants={variants}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once, amount: 0.2 }}
       transition={delay ? { delay } : undefined}
+      {...trigger}
     >
       {children}
     </MotionTag>

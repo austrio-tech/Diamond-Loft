@@ -85,7 +85,7 @@ export default function WishlistPage() {
         </h1>
       </div>
 
-      <Stagger className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <Stagger inView={false} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((p) => (
           <StaggerItem key={p.id}>
             <ProductCard product={p} />

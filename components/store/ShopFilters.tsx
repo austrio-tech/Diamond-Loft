@@ -34,7 +34,7 @@ export default function ShopFilters({
       }
     });
     const qs = sp.toString();
-    router.push(pathname + (qs ? "?" + qs : ""));
+    router.push(pathname + (qs ? "?" + qs : ""), { scroll: false });
   };
 
   return (

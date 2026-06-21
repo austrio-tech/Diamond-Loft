@@ -82,6 +82,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
               <li key={c.id}>
                 <Link
                   href={`/category/${c.slug}`}
+                  scroll={false}
                   className={`flex items-center justify-between py-1.5 px-2 rounded text-sm transition-colors ${
                     c.slug === slug
                       ? "text-gold font-medium bg-gold/5 border-l-2 border-gold pl-3"
@@ -114,7 +115,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
               </p>
             </div>
           ) : (
-            <Stagger className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <Stagger inView={false} className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((p) => (
                 <StaggerItem key={p.id}>
                   <ProductCard product={p} />

@@ -14,9 +14,9 @@ export default function CategorySort({ currentSort }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
     if (val === "featured") {
-      router.push(pathname);
+      router.push(pathname, { scroll: false });
     } else {
-      router.push(`${pathname}?sort=${val}`);
+      router.push(`${pathname}?sort=${val}`, { scroll: false });
     }
   };
 
