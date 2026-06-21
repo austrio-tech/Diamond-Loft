@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     // /api/upload/receipt endpoint — never a client-controlled arbitrary URL
     // (prevents stored XSS / phishing via javascript: or external links).
     const RECEIPT_RE =
-      /^\/uploads\/receipts\/[A-Za-z0-9._-]+\.(jpg|jpeg|png|webp|gif|avif)$/;
+      /^\/api\/uploads\/receipts\/[A-Za-z0-9._-]+\.(jpg|jpeg|png|webp|gif|avif)$/;
     const receiptUrl =
       typeof body.receiptUrl === "string" && RECEIPT_RE.test(body.receiptUrl)
         ? body.receiptUrl

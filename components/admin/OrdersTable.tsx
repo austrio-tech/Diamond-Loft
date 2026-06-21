@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { formatPrice, paymentMethodLabel } from "@/lib/utils";
+import ReceiptViewer from "./ReceiptViewer";
 import type { Order, OrderStatus, PaymentStatus } from "@/types";
 
 const STATUS_BADGE_CLASSES: Record<OrderStatus, string> = {
@@ -91,24 +92,7 @@ export default function OrdersTable({ orders }: Props) {
                   </span>
                 </td>
                 <td className="py-3 px-3 whitespace-nowrap">
-                  {order.receiptUrl?.startsWith("/uploads/receipts/") ? (
-                    <a
-                      href={order.receiptUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title="View receipt"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <img
-                        src={order.receiptUrl}
-                        alt="Receipt"
-                        className="w-12 h-12 object-cover rounded border border-line block"
-                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
-                      />
-                    </a>
-                  ) : (
-                    <span className="text-muted text-sm">—</span>
-                  )}
+                  <ReceiptViewer url={order.receiptUrl} />
                 </td>
                 <td className="py-3 px-3 whitespace-nowrap">
                   <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide ${STATUS_BADGE_CLASSES[order.status]}`}>

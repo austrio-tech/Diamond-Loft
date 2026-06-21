@@ -19,5 +19,7 @@ export async function saveUpload(
   const uploadDir = join(process.cwd(), "public", rel);
   await mkdir(uploadDir, { recursive: true });
   await writeFile(join(uploadDir, filename), buffer);
-  return `/${rel}/${filename}`;
+  // Served via the /api/uploads route (Next does not serve runtime-added
+  // files from /public after build).
+  return `/api/${rel}/${filename}`;
 }

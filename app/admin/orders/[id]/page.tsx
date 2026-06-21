@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { formatPrice, paymentMethodLabel } from "@/lib/utils";
 import type { Order, OrderItem, OrderStatus, PaymentMethod, PaymentStatus } from "@/types";
 import OrderDetailControls from "@/components/admin/OrderDetailControls";
+import ReceiptViewer from "@/components/admin/ReceiptViewer";
 
 const PAYMENT_STATUS_BADGE_CLASSES: Record<PaymentStatus, string> = {
   unpaid: "bg-red-500/15 text-red-700 dark:text-red-400",
@@ -131,17 +132,7 @@ export default async function OrderDetailPage({
             </div>
             <div className="flex items-center justify-between py-2">
               <span className="text-xs uppercase tracking-[0.2em] text-muted">Receipt</span>
-              {order.receiptUrl?.startsWith("/uploads/receipts/") ? (
-                <a href={order.receiptUrl} target="_blank" rel="noopener noreferrer" title="View receipt">
-                  <img
-                    src={order.receiptUrl}
-                    alt="Receipt"
-                    className="w-16 h-16 object-cover rounded border border-line"
-                  />
-                </a>
-              ) : (
-                <span className="text-sm text-muted">—</span>
-              )}
+              <ReceiptViewer url={order.receiptUrl} size="w-16 h-16" />
             </div>
           </div>
 
