@@ -7,9 +7,9 @@ export const STORE_INFO: StoreInfo = {
     "Handcrafted fine jewellery — earrings, pendants, bracelets & ear tops.",
   whatsapp: "+92 322 6329793",
   whatsappClean: "923226329793",
-  email: "diamondloft.pk@gmail.com",
-  instagram: "https://instagram.com/diamondloftpk",
-  facebook: "https://facebook.com/diamondloftpk",
+  email: "Diamondloft.pk@gmail.com",
+  instagram: "https://instagram.com/diamondloft.pk",
+  facebook: "https://facebook.com/diamondloft.pk",
 };
 
 export function calcDiscount(
