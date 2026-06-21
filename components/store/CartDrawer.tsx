@@ -33,7 +33,7 @@ export default function CartDrawer() {
             initial="hidden"
             animate="show"
             exit="exit"
-            className="fixed inset-0 z-50 bg-ink/60"
+            className="fixed inset-0 z-50 bg-black/50"
             onClick={closeCart}
             aria-hidden="true"
           />
@@ -136,7 +136,7 @@ export default function CartDrawer() {
                     Shipping calculated at checkout
                   </p>
                   <button
-                    className="w-full bg-ink-deep text-[#f1e6cf] py-3.5 text-sm [font-variant:small-caps] tracking-[0.2em] hover:bg-ink transition-colors"
+                    className="w-full bg-ink-deep text-[#f1e6cf] py-3.5 text-sm [font-variant:small-caps] tracking-[0.2em] hover:opacity-90 transition-opacity"
                     onClick={() => {
                       closeCart();
                       router.push("/checkout");

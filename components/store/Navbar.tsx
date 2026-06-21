@@ -210,7 +210,7 @@ export default function Navbar() {
               initial="hidden"
               animate="show"
               exit="exit"
-              className="fixed inset-0 z-50 bg-ink/60"
+              className="fixed inset-0 z-50 bg-black/50"
               aria-hidden="true"
               onClick={() => setMenuOpen(false)}
             />

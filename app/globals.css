@@ -95,6 +95,23 @@
     text-decoration: none;
   }
 
+  /* Tailwind v4 preflight no longer sets cursor:pointer on buttons —
+     restore it for all interactive controls (site + admin). */
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  [role="tab"],
+  [role="option"],
+  [role="menuitem"],
+  label[for],
+  select:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   img {
     display: block;
     max-width: 100%;

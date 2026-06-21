@@ -162,7 +162,7 @@ export default function OrderReceipt({ order }: { order: ReceiptData }) {
               initial="hidden"
               animate="show"
               exit="exit"
-              className="fixed inset-0 z-50 bg-ink/60 flex items-center justify-center p-5"
+              className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-5"
               onClick={() => setOpen(false)}
             >
               {/* Modal panel */}

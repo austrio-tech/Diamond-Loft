@@ -116,7 +116,7 @@ export default function ProductDetailClient({ product, related }: Props) {
                 </span>
               )}
               {!product.inStock && (
-                <div className="absolute inset-0 bg-ink/50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                   <span className="text-[#f1e6cf] [font-variant:small-caps] tracking-widest text-sm">
                     Out of Stock
                   </span>

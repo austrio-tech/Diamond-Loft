@@ -538,7 +538,7 @@ export default function SectionsManager({ sections }: Props) {
   };
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-serif text-2xl text-ink">Sections</h1>
         <button
