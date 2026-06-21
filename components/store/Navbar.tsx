@@ -75,12 +75,15 @@ export default function Navbar() {
         </div>
 
         {/* Brand row */}
-        <div className="text-center pt-6 pb-3 border-b border-line">
-          <Link href="/" aria-label="Diamond Loft home">
-            <div className="font-serif text-4xl font-medium tracking-[0.15em] text-ink leading-none">
-              DIAMOND LOFT
-            </div>
-            <div className="text-gold text-[11px] [font-variant:small-caps] tracking-[0.35em] mt-1">
+        <div className="flex flex-col items-center pt-6 pb-3 border-b border-line">
+          <Link href="/" aria-label="Diamond Loft home" className="flex flex-col items-center">
+            {/* Black logo: blend onto the light brand row; invert for dark theme */}
+            <img
+              src="/diamond-loft.jpeg"
+              alt="Diamond Loft"
+              className="h-12 md:h-14 w-auto mix-blend-multiply dark:mix-blend-screen dark:invert"
+            />
+            <div className="text-gold text-[11px] [font-variant:small-caps] tracking-[0.35em] mt-1.5">
               Fine Jewellery · Est. 2025
             </div>
           </Link>

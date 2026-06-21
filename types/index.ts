@@ -186,11 +186,10 @@ export interface StoreInfo {
   tagline: string;
   description: string;
   whatsapp: string;
-  whatsappClean: string; // digits only, e.g. "923225578305"
+  whatsappClean: string; // digits only, e.g. "923226329793"
   email: string;
   instagram: string;
   facebook: string;
-  pinterest: string;
 }
 
 // ── API helpers ───────────────────────────────────────────────

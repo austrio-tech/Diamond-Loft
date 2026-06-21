@@ -5,12 +5,11 @@ export const STORE_INFO: StoreInfo = {
   tagline: "Elegance Crafted for You",
   description:
     "Handcrafted fine jewellery — earrings, pendants, bracelets & ear tops.",
-  whatsapp: "+923225578305",
-  whatsappClean: "923225578305",
+  whatsapp: "+92 322 6329793",
+  whatsappClean: "923226329793",
   email: "diamondloft.pk@gmail.com",
   instagram: "https://instagram.com/diamondloftpk",
   facebook: "https://facebook.com/diamondloftpk",
-  pinterest: "https://pinterest.com/diamondloftpk",
 };
 
 export function calcDiscount(
