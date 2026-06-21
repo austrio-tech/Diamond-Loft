@@ -21,9 +21,13 @@ export default function CategorySort({ currentSort }: Props) {
   };
 
   return (
-    <div className="cat-page__sort">
-      <SlidersHorizontal size={15} />
-      <select className="sort-select" value={currentSort} onChange={handleChange}>
+    <div className="flex items-center gap-2 border border-line rounded-card px-3 py-2">
+      <SlidersHorizontal size={13} className="text-muted flex-shrink-0" />
+      <select
+        className="bg-transparent text-[11px] [font-variant:small-caps] tracking-[0.12em] text-muted focus:outline-none cursor-pointer"
+        value={currentSort}
+        onChange={handleChange}
+      >
         <option value="featured">Featured</option>
         <option value="price-asc">Price: Low to High</option>
         <option value="price-desc">Price: High to Low</option>

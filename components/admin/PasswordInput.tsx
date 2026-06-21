@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import styles from "./PasswordInput.module.css";
 
 interface Props {
   id?: string;
@@ -26,7 +25,7 @@ export default function PasswordInput({
   const [show, setShow] = useState(false);
 
   return (
-    <div className={styles.wrap}>
+    <div className="relative flex items-center">
       <input
         id={id}
         type={show ? "text" : "password"}
@@ -35,11 +34,11 @@ export default function PasswordInput({
         placeholder={placeholder}
         required={required}
         autoComplete={autoComplete}
-        className={`${inputClassName ?? ""} ${styles.input}`}
+        className={`pr-9 ${inputClassName ?? ""}`}
       />
       <button
         type="button"
-        className={styles.toggle}
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted hover:text-ink transition-colors p-1"
         onClick={() => setShow((s) => !s)}
         aria-label={show ? "Hide password" : "Show password"}
         title={show ? "Hide password" : "Show password"}

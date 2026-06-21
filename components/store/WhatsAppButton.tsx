@@ -11,11 +11,13 @@ export default function WhatsAppButton() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="wa-btn"
       aria-label="Chat on WhatsApp"
+      className="group fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-[#25d366] text-white rounded-full px-4 py-3 shadow-card-hover hover:shadow-card transition-all duration-300"
     >
-      <MessageCircle size={26} fill="currentColor" />
-      <span className="wa-btn__tooltip">Chat with us</span>
+      <MessageCircle size={22} fill="currentColor" strokeWidth={0} />
+      <span className="text-xs [font-variant:small-caps] tracking-wide font-medium hidden group-hover:inline transition-all">
+        Chat with us
+      </span>
     </a>
   );
 }

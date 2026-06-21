@@ -13,6 +13,7 @@ import CategoryGrid from "@/components/store/CategoryGrid";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import TrustBar from "@/components/store/TrustBar";
 import Testimonials from "@/components/store/Testimonials";
+import Reveal from "@/components/motion/Reveal";
 
 export default async function HomePage() {
   const [sections, categories, featuredProducts] = await Promise.all([
@@ -26,30 +27,46 @@ export default async function HomePage() {
       {sections.map((section) => {
         switch (section.type) {
           case "hero":
-            return <Hero key={section.id} config={section.config as HeroConfig} />;
+            return (
+              <Reveal key={section.id}>
+                <Hero config={section.config as HeroConfig} />
+              </Reveal>
+            );
           case "marquee":
-            return <Marquee key={section.id} config={section.config as MarqueeConfig} />;
+            return (
+              <Reveal key={section.id}>
+                <Marquee config={section.config as MarqueeConfig} />
+              </Reveal>
+            );
           case "categoryGrid":
             return (
-              <CategoryGrid
-                key={section.id}
-                categories={categories}
-                config={section.config as CategoryGridConfig}
-              />
+              <Reveal key={section.id}>
+                <CategoryGrid
+                  categories={categories}
+                  config={section.config as CategoryGridConfig}
+                />
+              </Reveal>
             );
           case "featured":
             return (
-              <FeaturedProducts
-                key={section.id}
-                products={featuredProducts}
-                config={section.config as FeaturedConfig}
-              />
+              <Reveal key={section.id}>
+                <FeaturedProducts
+                  products={featuredProducts}
+                  config={section.config as FeaturedConfig}
+                />
+              </Reveal>
             );
           case "trust":
-            return <TrustBar key={section.id} config={section.config as TrustConfig} />;
+            return (
+              <Reveal key={section.id}>
+                <TrustBar config={section.config as TrustConfig} />
+              </Reveal>
+            );
           case "testimonials":
             return (
-              <Testimonials key={section.id} config={section.config as TestimonialsConfig} />
+              <Reveal key={section.id}>
+                <Testimonials config={section.config as TestimonialsConfig} />
+              </Reveal>
             );
           default:
             return null;

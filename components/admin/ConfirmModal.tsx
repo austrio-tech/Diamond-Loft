@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import styles from "./ConfirmModal.module.css";
+import { motion, AnimatePresence } from "framer-motion";
+import { overlay, modalPop } from "@/lib/motion";
 
 interface Props {
   open: boolean;
@@ -39,40 +40,54 @@ export default function ConfirmModal({
     };
   }, [open, onCancel]);
 
-  if (!open) return null;
-
   return (
-    <div className={styles.overlay} onClick={onCancel}>
-      <div
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="confirm-title"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 id="confirm-title" className={styles.title}>
-          {title}
-        </h2>
-        <p className={styles.message}>{message}</p>
-        <div className={styles.actions}>
-          <button
-            type="button"
-            className={styles.cancel}
+    <AnimatePresence>
+      {open && (
+        <>
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+            variants={overlay}
+            initial="hidden"
+            animate="show"
+            exit="exit"
             onClick={onCancel}
-            disabled={busy}
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            className={`${styles.confirm} ${danger ? styles.danger : ""}`}
-            onClick={onConfirm}
-            disabled={busy}
-          >
-            {busy ? "Working…" : confirmLabel}
-          </button>
-        </div>
-      </div>
-    </div>
+          />
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none">
+            <motion.div
+              className="bg-surface border border-line rounded-card shadow-card p-6 w-full max-w-sm pointer-events-auto"
+              variants={modalPop}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="confirm-title"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 id="confirm-title" className="font-serif text-lg text-ink mb-2">{title}</h2>
+              <p className="text-sm text-muted mb-6">{message}</p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  type="button"
+                  className="px-4 py-2 text-sm border border-line rounded hover:bg-soft text-muted transition-colors"
+                  onClick={onCancel}
+                  disabled={busy}
+                >
+                  {cancelLabel}
+                </button>
+                <button
+                  type="button"
+                  className={`px-4 py-2 text-sm rounded font-medium transition-colors disabled:opacity-50 ${danger ? "bg-red-600 text-white hover:bg-red-700" : "bg-ink-deep text-gold hover:opacity-90"}`}
+                  onClick={onConfirm}
+                  disabled={busy}
+                >
+                  {busy ? "Working…" : confirmLabel}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

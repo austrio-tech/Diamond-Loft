@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./SectionsManager.module.css";
 import type {
   Section,
   SectionConfig,
@@ -30,6 +29,10 @@ function updateSection<T extends SectionConfig>(
   );
 }
 
+const inputCls =
+  "w-full border border-line rounded px-3 py-2 text-sm text-ink bg-page focus:outline-none focus:border-gold transition-colors";
+const labelCls = "text-xs uppercase tracking-[0.2em] text-muted mb-1 block";
+
 // ── Hero Editor ───────────────────────────────────────────────────────────────
 
 function HeroEditor({
@@ -51,12 +54,12 @@ function HeroEditor({
   ];
 
   return (
-    <div className={styles.configGrid}>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {fields.map(({ key, label }) => (
-        <div className={styles.configField} key={key}>
-          <label className={styles.configLabel}>{label}</label>
+        <div className="flex flex-col" key={key}>
+          <label className={labelCls}>{label}</label>
           <input
-            className={styles.configInput}
+            className={inputCls}
             type="text"
             value={config[key]}
             onChange={(e) => {
@@ -82,9 +85,9 @@ function MarqueeEditor({
   return (
     <div>
       {config.items.map((item, idx) => (
-        <div className={styles.listItem} key={idx}>
+        <div className="flex gap-2 mb-2" key={idx}>
           <input
-            className={styles.listItemInput}
+            className={`${inputCls} flex-1`}
             type="text"
             value={item}
             onChange={(e) => {
@@ -97,7 +100,7 @@ function MarqueeEditor({
             }}
           />
           <button
-            className={styles.removeBtn}
+            className="px-3 py-1.5 text-xs border border-red-300 text-red-600 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
             type="button"
             onClick={() =>
               onChange((cfg) => ({
@@ -111,7 +114,7 @@ function MarqueeEditor({
         </div>
       ))}
       <button
-        className={styles.addBtn}
+        className="px-3 py-1.5 text-xs border border-line rounded text-muted hover:bg-soft mt-1 transition-colors"
         type="button"
         onClick={() =>
           onChange((cfg) => ({ ...cfg, items: [...cfg.items, ""] }))
@@ -133,11 +136,11 @@ function LabelTitleEditor<T extends FeaturedConfig | CategoryGridConfig>({
   onChange: (updater: (cfg: T) => T) => void;
 }) {
   return (
-    <div className={styles.configGrid}>
-      <div className={styles.configField}>
-        <label className={styles.configLabel}>Label</label>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="flex flex-col">
+        <label className={labelCls}>Label</label>
         <input
-          className={styles.configInput}
+          className={inputCls}
           type="text"
           value={config.label}
           onChange={(e) => {
@@ -146,10 +149,10 @@ function LabelTitleEditor<T extends FeaturedConfig | CategoryGridConfig>({
           }}
         />
       </div>
-      <div className={styles.configField}>
-        <label className={styles.configLabel}>Title</label>
+      <div className="flex flex-col">
+        <label className={labelCls}>Title</label>
         <input
-          className={styles.configInput}
+          className={inputCls}
           type="text"
           value={config.title}
           onChange={(e) => {
@@ -171,11 +174,7 @@ function TrustEditor({
   config: TrustConfig;
   onChange: (updater: (cfg: TrustConfig) => TrustConfig) => void;
 }) {
-  const updatePerk = (
-    perkIdx: number,
-    key: keyof TrustPerk,
-    value: string
-  ) => {
+  const updatePerk = (perkIdx: number, key: keyof TrustPerk, value: string) => {
     onChange((cfg) => {
       const perks = cfg.perks.map((p, i) =>
         i === perkIdx ? { ...p, [key]: value } : p
@@ -187,39 +186,39 @@ function TrustEditor({
   return (
     <div>
       {config.perks.map((perk, idx) => (
-        <div className={styles.perkCard} key={idx}>
-          <div className={styles.configGrid}>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Icon</label>
+        <div className="bg-soft rounded p-3 mb-3 border border-line" key={idx}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label className={labelCls}>Icon</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={perk.icon}
                 onChange={(e) => updatePerk(idx, "icon", e.target.value)}
               />
             </div>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Title</label>
+            <div className="flex flex-col">
+              <label className={labelCls}>Title</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={perk.title}
                 onChange={(e) => updatePerk(idx, "title", e.target.value)}
               />
             </div>
-            <div className={styles.configField} style={{ gridColumn: "1 / -1" }}>
-              <label className={styles.configLabel}>Description</label>
+            <div className="flex flex-col sm:col-span-2">
+              <label className={labelCls}>Description</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={perk.desc}
                 onChange={(e) => updatePerk(idx, "desc", e.target.value)}
               />
             </div>
           </div>
-          <div style={{ marginTop: "8px" }}>
+          <div className="mt-2">
             <button
-              className={styles.removeBtn}
+              className="px-3 py-1.5 text-xs border border-red-300 text-red-600 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
               type="button"
               onClick={() =>
                 onChange((cfg) => ({
@@ -234,7 +233,7 @@ function TrustEditor({
         </div>
       ))}
       <button
-        className={styles.addBtn}
+        className="px-3 py-1.5 text-xs border border-line rounded text-muted hover:bg-soft mt-1 transition-colors"
         type="button"
         onClick={() =>
           onChange((cfg) => ({
@@ -273,11 +272,11 @@ function TestimonialsEditor({
 
   return (
     <div>
-      <div className={styles.configGrid} style={{ marginBottom: "16px" }}>
-        <div className={styles.configField}>
-          <label className={styles.configLabel}>Label</label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div className="flex flex-col">
+          <label className={labelCls}>Label</label>
           <input
-            className={styles.configInput}
+            className={inputCls}
             type="text"
             value={config.label}
             onChange={(e) => {
@@ -286,10 +285,10 @@ function TestimonialsEditor({
             }}
           />
         </div>
-        <div className={styles.configField}>
-          <label className={styles.configLabel}>Title</label>
+        <div className="flex flex-col">
+          <label className={labelCls}>Title</label>
           <input
-            className={styles.configInput}
+            className={inputCls}
             type="text"
             value={config.title}
             onChange={(e) => {
@@ -301,70 +300,68 @@ function TestimonialsEditor({
       </div>
 
       {config.reviews.map((review, idx) => (
-        <div className={styles.reviewCard} key={idx}>
-          <div className={styles.configGrid}>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Name</label>
+        <div className="bg-soft rounded p-3 mb-3 border border-line" key={idx}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label className={labelCls}>Name</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={review.name}
                 onChange={(e) => updateReview(idx, "name", e.target.value)}
               />
             </div>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Location</label>
+            <div className="flex flex-col">
+              <label className={labelCls}>Location</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={review.location}
                 onChange={(e) => updateReview(idx, "location", e.target.value)}
               />
             </div>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Rating</label>
+            <div className="flex flex-col">
+              <label className={labelCls}>Rating</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="number"
                 min={1}
                 max={5}
                 value={review.rating}
-                onChange={(e) =>
-                  updateReview(idx, "rating", Number(e.target.value))
-                }
+                onChange={(e) => updateReview(idx, "rating", Number(e.target.value))}
               />
             </div>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Product</label>
+            <div className="flex flex-col">
+              <label className={labelCls}>Product</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={review.product}
                 onChange={(e) => updateReview(idx, "product", e.target.value)}
               />
             </div>
-            <div className={styles.configField}>
-              <label className={styles.configLabel}>Avatar URL</label>
+            <div className="flex flex-col">
+              <label className={labelCls}>Avatar URL</label>
               <input
-                className={styles.configInput}
+                className={inputCls}
                 type="text"
                 value={review.avatar}
                 onChange={(e) => updateReview(idx, "avatar", e.target.value)}
               />
             </div>
-            <div className={styles.configField} style={{ gridColumn: "1 / -1" }}>
-              <label className={styles.configLabel}>Review Text</label>
+            <div className="flex flex-col sm:col-span-2">
+              <label className={labelCls}>Review Text</label>
               <textarea
-                className={styles.configTextarea}
+                className={`${inputCls} resize-y`}
                 rows={3}
                 value={review.text}
                 onChange={(e) => updateReview(idx, "text", e.target.value)}
               />
             </div>
           </div>
-          <div style={{ marginTop: "8px" }}>
+          <div className="mt-2">
             <button
-              className={styles.removeBtn}
+              className="px-3 py-1.5 text-xs border border-red-300 text-red-600 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
               type="button"
               onClick={() =>
                 onChange((cfg) => ({
@@ -380,21 +377,14 @@ function TestimonialsEditor({
       ))}
 
       <button
-        className={styles.addBtn}
+        className="px-3 py-1.5 text-xs border border-line rounded text-muted hover:bg-soft mt-1 transition-colors"
         type="button"
         onClick={() =>
           onChange((cfg) => ({
             ...cfg,
             reviews: [
               ...cfg.reviews,
-              {
-                name: "",
-                location: "",
-                rating: 5,
-                text: "",
-                product: "",
-                avatar: "",
-              },
+              { name: "", location: "", rating: 5, text: "", product: "", avatar: "" },
             ],
           }))
         }
@@ -436,27 +426,21 @@ function SectionCard({
         return (
           <MarqueeEditor
             config={section.config as MarqueeConfig}
-            onChange={(updater) =>
-              onConfigChange<MarqueeConfig>(index, updater)
-            }
+            onChange={(updater) => onConfigChange<MarqueeConfig>(index, updater)}
           />
         );
       case "featured":
         return (
           <LabelTitleEditor<FeaturedConfig>
             config={section.config as FeaturedConfig}
-            onChange={(updater) =>
-              onConfigChange<FeaturedConfig>(index, updater)
-            }
+            onChange={(updater) => onConfigChange<FeaturedConfig>(index, updater)}
           />
         );
       case "categoryGrid":
         return (
           <LabelTitleEditor<CategoryGridConfig>
             config={section.config as CategoryGridConfig}
-            onChange={(updater) =>
-              onConfigChange<CategoryGridConfig>(index, updater)
-            }
+            onChange={(updater) => onConfigChange<CategoryGridConfig>(index, updater)}
           />
         );
       case "trust":
@@ -470,44 +454,44 @@ function SectionCard({
         return (
           <TestimonialsEditor
             config={section.config as TestimonialsConfig}
-            onChange={(updater) =>
-              onConfigChange<TestimonialsConfig>(index, updater)
-            }
+            onChange={(updater) => onConfigChange<TestimonialsConfig>(index, updater)}
           />
         );
     }
   };
 
   return (
-    <div className={styles.sectionCard}>
+    <div className="bg-surface border border-line rounded-card mb-4 overflow-hidden">
       <div
-        className={styles.sectionHeader}
+        className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-soft border-b border-line transition-colors"
         onClick={() => setExpanded((v) => !v)}
       >
-        <span className={styles.sectionTitle}>{section.type}</span>
-        <div className={styles.toggleRow} onClick={(e) => e.stopPropagation()}>
-          <label className={styles.configLabel} style={{ margin: 0 }}>
+        <span className="font-medium text-ink uppercase tracking-[0.1em] text-sm">
+          {section.type}
+        </span>
+        <div
+          className="flex items-center gap-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <label className="text-xs uppercase tracking-[0.1em] text-muted cursor-pointer">
             {section.enabled ? "Enabled" : "Disabled"}
           </label>
           <input
-            className={styles.enableToggle}
+            className="w-4 h-4 accent-amber-600"
             type="checkbox"
             checked={section.enabled}
             onChange={() => onToggle(index)}
           />
           <button
-            className={styles.addBtn}
+            className="ml-2 px-3 py-1 text-xs border border-line rounded text-muted hover:bg-soft transition-colors"
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            style={{ marginLeft: "8px" }}
           >
             {expanded ? "Collapse" : "Expand"}
           </button>
         </div>
       </div>
-      {expanded && (
-        <div className={styles.sectionBody}>{renderEditor()}</div>
-      )}
+      {expanded && <div className="p-4">{renderEditor()}</div>}
     </div>
   );
 }
@@ -554,11 +538,11 @@ export default function SectionsManager({ sections }: Props) {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.heading}>Sections</h1>
+    <div className="max-w-3xl">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="font-serif text-2xl text-ink">Sections</h1>
         <button
-          className={styles.saveBtn}
+          className="px-5 py-2 bg-ink-deep text-gold text-sm rounded hover:opacity-90 disabled:opacity-50 transition-opacity"
           type="button"
           onClick={handleSave}
           disabled={saving}

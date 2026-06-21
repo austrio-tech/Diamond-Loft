@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Category } from "@/types";
-import styles from "./CategoryForm.module.css";
 
 interface Props {
   category?: Category;
   onSuccess?: () => void;
 }
+
+const inputCls =
+  "w-full bg-page border border-line rounded px-3 py-2 text-sm text-ink focus:outline-none focus:border-gold transition-colors";
+const labelCls = "block text-xs uppercase tracking-[0.2em] text-muted mb-1.5";
 
 export default function CategoryForm({ category, onSuccess }: Props) {
   const router = useRouter();
@@ -47,9 +50,7 @@ export default function CategoryForm({ category, onSuccess }: Props) {
     const payload = { name, slug, description, image, accent };
 
     try {
-      const url = category
-        ? `/api/categories/${category.id}`
-        : "/api/categories";
+      const url = category ? `/api/categories/${category.id}` : "/api/categories";
       const method = category ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -73,18 +74,16 @@ export default function CategoryForm({ category, onSuccess }: Props) {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       {error && (
-        <p style={{ color: "#842029", fontSize: "0.875rem" }}>{error}</p>
+        <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
       )}
 
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor="cat-name">
-          Name
-        </label>
+      <div className="flex flex-col">
+        <label className={labelCls} htmlFor="cat-name">Name</label>
         <input
           id="cat-name"
-          className={styles.input}
+          className={inputCls}
           type="text"
           value={name}
           onChange={(e) => handleNameChange(e.target.value)}
@@ -93,13 +92,11 @@ export default function CategoryForm({ category, onSuccess }: Props) {
         />
       </div>
 
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor="cat-slug">
-          Slug
-        </label>
+      <div className="flex flex-col">
+        <label className={labelCls} htmlFor="cat-slug">Slug</label>
         <input
           id="cat-slug"
-          className={styles.input}
+          className={inputCls}
           type="text"
           value={slug}
           onChange={(e) => handleSlugChange(e.target.value)}
@@ -108,13 +105,11 @@ export default function CategoryForm({ category, onSuccess }: Props) {
         />
       </div>
 
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor="cat-description">
-          Description
-        </label>
+      <div className="flex flex-col">
+        <label className={labelCls} htmlFor="cat-description">Description</label>
         <textarea
           id="cat-description"
-          className={styles.textarea}
+          className={`${inputCls} resize-y`}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
@@ -122,13 +117,11 @@ export default function CategoryForm({ category, onSuccess }: Props) {
         />
       </div>
 
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor="cat-image">
-          Image URL
-        </label>
+      <div className="flex flex-col">
+        <label className={labelCls} htmlFor="cat-image">Image URL</label>
         <input
           id="cat-image"
-          className={styles.input}
+          className={inputCls}
           type="text"
           value={image}
           onChange={(e) => setImage(e.target.value)}
@@ -136,26 +129,23 @@ export default function CategoryForm({ category, onSuccess }: Props) {
         />
       </div>
 
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor="cat-accent">
-          Accent Color
-        </label>
+      <div className="flex flex-col">
+        <label className={labelCls} htmlFor="cat-accent">Accent Color</label>
         <input
           id="cat-accent"
-          className={styles.input}
+          className="w-full h-10 rounded border border-line cursor-pointer p-1 bg-page focus:outline-none focus:border-gold"
           type="color"
           value={accent}
           onChange={(e) => setAccent(e.target.value)}
-          style={{ height: "42px", padding: "4px 8px", cursor: "pointer" }}
         />
       </div>
 
-      <button className={styles.submitBtn} type="submit" disabled={loading}>
-        {loading
-          ? "Saving…"
-          : category
-            ? "Update Category"
-            : "Create Category"}
+      <button
+        className="px-6 py-2.5 bg-ink-deep text-gold text-sm font-medium rounded hover:opacity-90 disabled:opacity-50 transition-opacity self-start"
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? "Saving…" : category ? "Update Category" : "Create Category"}
       </button>
     </form>
   );

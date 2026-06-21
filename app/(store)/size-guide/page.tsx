@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import InfoPage, { infoStyles as styles } from "@/components/store/InfoPage";
+import InfoPage from "@/components/store/InfoPage";
 
 export const metadata: Metadata = {
   title: "Size Guide",
@@ -11,7 +11,7 @@ export default function SizeGuidePage() {
     <InfoPage title="Size Guide" subtitle="Find your perfect fit.">
       <h2>Bracelets</h2>
       <p>Measure your wrist snugly with a tape, then add 1.5–2 cm for a comfortable fit.</p>
-      <table className={styles.table}>
+      <table>
         <thead>
           <tr><th>Wrist Size</th><th>Recommended Bracelet</th></tr>
         </thead>
@@ -23,7 +23,7 @@ export default function SizeGuidePage() {
       </table>
 
       <h2>Necklace & Pendant Lengths</h2>
-      <table className={styles.table}>
+      <table>
         <thead>
           <tr><th>Length</th><th>Sits At</th></tr>
         </thead>

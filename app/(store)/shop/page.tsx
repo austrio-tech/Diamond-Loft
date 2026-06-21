@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { getProducts, getCategories } from "@/lib/data";
 import ProductCard from "@/components/store/ProductCard";
 import ShopFilters from "@/components/store/ShopFilters";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 
 interface PageProps {
   searchParams: Promise<{ category?: string; q?: string; sort?: string }>;
@@ -41,44 +42,59 @@ export default async function ShopPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="shop-page">
+    <div className="bg-page min-h-screen">
       {/* Banner */}
-      <div className="shop-page__banner">
-        <div className="container">
-          <nav className="breadcrumb">
-            <Link href="/" className="breadcrumb__link">Home</Link>
-            <ChevronRight size={14} className="breadcrumb__sep" />
-            <span className="breadcrumb__current" style={{ color: "rgba(255,255,255,0.8)" }}>
+      <div className="bg-ink-deep py-16 md:py-20">
+        <div className="mx-auto max-w-[1380px] px-6">
+          <nav className="flex items-center gap-2 mb-5">
+            <Link
+              href="/"
+              className="uppercase tracking-[0.25em] text-xs text-gold-light hover:text-gold transition-colors"
+            >
+              Home
+            </Link>
+            <ChevronRight size={12} className="text-gold-light/50" />
+            <span className="uppercase tracking-[0.25em] text-xs text-white/60">
               All Jewellery
             </span>
           </nav>
-          <h1 className="shop-page__title">All Jewellery</h1>
-          <p className="shop-page__subtitle">
+          <h1 className="font-serif text-4xl md:text-5xl text-white font-light leading-tight">
+            All Jewellery
+          </h1>
+          <p className="mt-3 text-white/60 text-sm tracking-wide">
             {allProducts.length} handcrafted pieces, waiting for you.
           </p>
         </div>
       </div>
 
-      <div className="container shop-page__body">
-        <ShopFilters
-          categories={categories}
-          activeCategory={category}
-          sort={sort}
-          totalProducts={allProducts.length}
-          categoryCounts={categoryCounts}
-        />
-
-        {/* Grid */}
-        <div className="shop-page__grid">
-          {filteredWithSearch.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+      {/* Body */}
+      <div className="mx-auto max-w-[1380px] px-6 py-12">
+        {/* Filters bar (full width, above the grid) */}
+        <div className="mb-8">
+          <ShopFilters
+            categories={categories}
+            activeCategory={category}
+            sort={sort}
+            totalProducts={allProducts.length}
+            categoryCounts={categoryCounts}
+          />
         </div>
 
-        {filteredWithSearch.length === 0 && (
-          <div className="shop-page__empty">
-            <p>No products found{q ? ` for "${q}"` : ""}. Try a different filter.</p>
+        {/* Product grid or empty state */}
+        {filteredWithSearch.length === 0 ? (
+          <div className="flex items-center justify-center py-24">
+            <p className="font-serif text-xl text-muted italic">
+              No products found{q ? ` for "${q}"` : ""}. Try a different filter.
+            </p>
           </div>
+        ) : (
+          <Stagger className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 content-start">
+            {filteredWithSearch.map((p) => (
+              <StaggerItem key={p.id}>
+                <ProductCard product={p} />
+              </StaggerItem>
+            ))}
+          </Stagger>
         )}
       </div>
     </div>

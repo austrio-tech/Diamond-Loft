@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Check, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { menuPop } from "@/lib/motion";
 import type { OrderStatus } from "@/types";
-import styles from "./StatusDropdown.module.css";
 
 const STATUSES: OrderStatus[] = [
   "pending",
@@ -21,13 +22,12 @@ const LABELS: Record<OrderStatus, string> = {
   cancelled: "Cancelled",
 };
 
-// dot color per status
-const COLORS: Record<OrderStatus, string> = {
-  pending: "#c9a96e",
-  confirmed: "#2f80ed",
-  shipped: "#8e6fd6",
-  delivered: "#1a7a40",
-  cancelled: "#c0392b",
+const STATUS_DOT_CLASS: Record<OrderStatus, string> = {
+  pending:   "bg-amber-500",
+  confirmed: "bg-blue-500",
+  shipped:   "bg-violet-500",
+  delivered: "bg-green-600",
+  cancelled: "bg-red-500",
 };
 
 interface Props {
@@ -52,41 +52,46 @@ export default function StatusDropdown({ value, onChange, busy }: Props) {
   }, [open]);
 
   return (
-    <div className={styles.wrap} ref={ref}>
+    <div className="relative inline-block" ref={ref}>
       <button
         type="button"
-        className={styles.trigger}
-        style={{ borderColor: COLORS[value] }}
+        className={`flex items-center gap-2 px-3 py-1.5 border border-line rounded bg-surface text-sm text-ink hover:border-gold disabled:opacity-50 transition-colors ${busy ? "opacity-50" : ""}`}
         aria-haspopup="listbox"
         aria-expanded={open}
         disabled={busy}
         onClick={() => setOpen((p) => !p)}
       >
-        <span className={styles.dot} style={{ background: COLORS[value] }} />
-        <span className={styles.label}>{LABELS[value]}</span>
-        <ChevronDown size={14} className={styles.chevron} />
+        <span className={`w-2 h-2 rounded-full flex-shrink-0 ${STATUS_DOT_CLASS[value]}`} />
+        <span>{LABELS[value]}</span>
+        <ChevronDown size={14} />
       </button>
-      {open && (
-        <div className={styles.menu} role="listbox">
-          {STATUSES.map((s) => (
-            <button
-              key={s}
-              type="button"
-              role="option"
-              aria-selected={s === value}
-              className={styles.item}
-              onClick={() => {
-                setOpen(false);
-                if (s !== value) onChange(s);
-              }}
-            >
-              <span className={styles.dot} style={{ background: COLORS[s] }} />
-              <span className={styles.label}>{LABELS[s]}</span>
-              {s === value && <Check size={14} className={styles.check} />}
-            </button>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="absolute left-0 top-full mt-1 z-10 bg-surface border border-line rounded-card shadow-card py-1 min-w-[160px]"
+            role="listbox"
+            variants={menuPop}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+          >
+            {STATUSES.map((s) => (
+              <button
+                key={s}
+                type="button"
+                role="option"
+                aria-selected={s === value}
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-ink hover:bg-soft transition-colors"
+                onClick={() => { setOpen(false); if (s !== value) onChange(s); }}
+              >
+                <span className={`w-2 h-2 rounded-full flex-shrink-0 ${STATUS_DOT_CLASS[s]}`} />
+                <span>{LABELS[s]}</span>
+                {s === value && <Check size={14} className="ml-auto text-gold" />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

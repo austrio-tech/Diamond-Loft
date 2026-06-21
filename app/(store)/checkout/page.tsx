@@ -115,11 +115,11 @@ export default function CheckoutPage() {
   // Empty cart state
   if (items.length === 0) {
     return (
-      <div style={{ minHeight: "60vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "16px", padding: "48px 24px", textAlign: "center" }}>
-        <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(24px,4vw,36px)", fontWeight: 400, color: "var(--charcoal)" }}>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 px-6 py-12 text-center">
+        <h1 className="font-serif text-3xl font-normal text-ink">
           Your cart is empty
         </h1>
-        <p style={{ color: "var(--muted)", fontSize: "15px" }}>
+        <p className="text-muted text-sm">
           Browse our collection and add something beautiful.
         </p>
         <Link href="/shop" className="btn btn--primary">
@@ -130,37 +130,48 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div style={{ background: "var(--cream)", minHeight: "100vh", paddingBottom: "80px" }}>
+    <div className="bg-page min-h-screen pb-20">
       {/* Page header */}
-      <div style={{ background: "linear-gradient(135deg, var(--charcoal) 0%, #4a3728 100%)", padding: "48px 0 36px" }}>
-        <div className="container">
+      <div className="bg-ink-deep py-12 md:pt-14 md:pb-10">
+        <div className="mx-auto max-w-[1380px] px-6">
           {/* Breadcrumb */}
-          <nav style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "16px" }}>
-            <Link href="/" style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", transition: "color 0.2s" }}>Home</Link>
-            <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px" }}>/</span>
-            <span style={{ fontSize: "12px", color: "var(--gold-light)", fontWeight: 500 }}>Checkout</span>
+          <nav className="flex items-center gap-1.5 mb-4">
+            <Link
+              href="/"
+              className="text-xs text-white/60 hover:text-white/90 transition-colors"
+            >
+              Home
+            </Link>
+            <span className="text-white/40 text-xs">/</span>
+            <span className="text-xs text-gold-light font-medium [font-variant:small-caps] tracking-wide">
+              Checkout
+            </span>
           </nav>
-          <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(28px,4vw,48px)", fontWeight: 400, color: "#fff" }}>
+          <h1 className="font-serif text-[clamp(28px,4vw,48px)] font-normal text-white">
             Checkout
           </h1>
         </div>
       </div>
 
       {/* Body */}
-      <div className="container" style={{ paddingTop: "40px" }}>
+      <div className="mx-auto max-w-[1380px] px-6 pt-10">
         <form onSubmit={handlePlaceOrder} noValidate>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "32px", alignItems: "start" }}>
+          <div className="grid gap-8 items-start lg:grid-cols-[1fr_380px]">
             {/* Left column: form */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div className="flex flex-col gap-6">
               {/* Contact Information */}
-              <div className="co-card">
-                <h2 className="co-card__title">Contact Information</h2>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
-                  <div className="co-field">
-                    <label htmlFor="co-name" className="co-label">Full Name</label>
+              <div className="bg-surface rounded-card shadow-card p-6 md:p-8">
+                <h2 className="font-serif text-xl font-normal text-ink mb-5">
+                  Contact Information
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label htmlFor="co-name" className="text-xs uppercase tracking-[0.15em] text-muted mb-1 block">
+                      Full Name
+                    </label>
                     <input
                       id="co-name"
-                      className="co-input"
+                      className="w-full border border-line bg-page px-3 py-2.5 text-sm text-ink focus:outline-none focus:border-gold placeholder:text-muted/60"
                       type="text"
                       placeholder="e.g. Sara Ahmed"
                       value={name}
@@ -168,24 +179,28 @@ export default function CheckoutPage() {
                       required
                     />
                   </div>
-                  <div className="co-field">
-                    <label htmlFor="co-phone" className="co-label">Phone Number</label>
+                  <div>
+                    <label htmlFor="co-phone" className="text-xs uppercase tracking-[0.15em] text-muted mb-1 block">
+                      Phone Number
+                    </label>
                     <input
                       id="co-phone"
-                      className={"co-input" + (phoneError ? " co-input--error" : "")}
+                      className={`w-full border bg-page px-3 py-2.5 text-sm text-ink focus:outline-none focus:border-gold placeholder:text-muted/60 ${phoneError ? "border-red-400" : "border-line"}`}
                       type="tel"
                       placeholder="e.g. 0312-3456789"
                       value={phone}
                       onChange={(e) => { setPhone(e.target.value); setPhoneError(""); }}
                       required
                     />
-                    {phoneError && <p className="co-error">{phoneError}</p>}
+                    {phoneError && <p className="text-xs text-red-500 mt-1">{phoneError}</p>}
                   </div>
-                  <div className="co-field" style={{ gridColumn: "span 2" }}>
-                    <label htmlFor="co-address" className="co-label">Delivery Address</label>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="co-address" className="text-xs uppercase tracking-[0.15em] text-muted mb-1 block">
+                      Delivery Address
+                    </label>
                     <input
                       id="co-address"
-                      className="co-input"
+                      className="w-full border border-line bg-page px-3 py-2.5 text-sm text-ink focus:outline-none focus:border-gold placeholder:text-muted/60"
                       type="text"
                       placeholder="Street, area, landmark…"
                       value={address}
@@ -193,11 +208,13 @@ export default function CheckoutPage() {
                       required
                     />
                   </div>
-                  <div className="co-field">
-                    <label htmlFor="co-city" className="co-label">City</label>
+                  <div>
+                    <label htmlFor="co-city" className="text-xs uppercase tracking-[0.15em] text-muted mb-1 block">
+                      City
+                    </label>
                     <input
                       id="co-city"
-                      className="co-input"
+                      className="w-full border border-line bg-page px-3 py-2.5 text-sm text-ink focus:outline-none focus:border-gold placeholder:text-muted/60"
                       type="text"
                       placeholder="e.g. Karachi"
                       value={city}
@@ -209,49 +226,49 @@ export default function CheckoutPage() {
               </div>
 
               {/* Payment Method */}
-              <div className="co-card">
-                <h2 className="co-card__title">Payment Method</h2>
+              <div className="bg-surface rounded-card shadow-card p-6 md:p-8">
+                <h2 className="font-serif text-xl font-normal text-ink mb-5">
+                  Payment Method
+                </h2>
 
                 {/* Top-level choice */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "20px" }}>
+                <div className="grid grid-cols-2 gap-2.5 mb-5">
                   <button
                     type="button"
-                    className={"co-pay-option" + (payTop === "cod" ? " co-pay-option--on" : "")}
                     onClick={() => setPayTop("cod")}
+                    className={`border p-4 rounded text-left transition hover:border-gold ${payTop === "cod" ? "border-gold bg-gold/5" : "border-line bg-page"}`}
                   >
-                    <span className="co-pay-option__icon">🚚</span>
-                    <span className="co-pay-option__label">Cash on Delivery</span>
-                    <span className="co-pay-option__sub">Pay when you receive</span>
+                    <span className="block text-xl mb-1">🚚</span>
+                    <span className="block text-sm font-medium text-ink">Cash on Delivery</span>
+                    <span className="block text-xs text-muted mt-0.5">Pay when you receive</span>
                   </button>
                   <button
                     type="button"
-                    className={"co-pay-option" + (payTop === "manual" ? " co-pay-option--on" : "")}
                     onClick={() => setPayTop("manual")}
+                    className={`border p-4 rounded text-left transition hover:border-gold ${payTop === "manual" ? "border-gold bg-gold/5" : "border-line bg-page"}`}
                   >
-                    <span className="co-pay-option__icon">💳</span>
-                    <span className="co-pay-option__label">Pay Now</span>
-                    <span className="co-pay-option__sub">Bank / JazzCash / EasyPaisa</span>
+                    <span className="block text-xl mb-1">💳</span>
+                    <span className="block text-sm font-medium text-ink">Pay Now</span>
+                    <span className="block text-xs text-muted mt-0.5">Bank / JazzCash / EasyPaisa</span>
                   </button>
                 </div>
 
                 {payTop === "cod" && (
-                  <div style={{ background: "var(--soft)", borderRadius: "10px", padding: "14px 16px" }}>
-                    <p style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.6 }}>
-                      Pay in cash when your order arrives at your doorstep. No advance payment required.
-                    </p>
+                  <div className="bg-soft rounded p-4 text-sm text-muted">
+                    Pay in cash when your order arrives at your doorstep. No advance payment required.
                   </div>
                 )}
 
                 {payTop === "manual" && (
                   <div>
                     {/* Sub-method tabs */}
-                    <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+                    <div className="flex gap-2 mb-4">
                       {(["bank", "jazzcash", "easypaisa"] as const).map((m) => (
                         <button
                           key={m}
                           type="button"
-                          className={"pay-tab" + (manualMethod === m ? " pay-tab--on" : "")}
                           onClick={() => setManualMethod(m)}
+                          className={`uppercase tracking-[0.15em] text-xs px-3 py-1.5 border transition ${manualMethod === m ? "border-gold text-gold bg-gold/5" : "border-line text-muted hover:border-gold hover:text-gold"}`}
                         >
                           {m === "bank" ? "Bank Transfer" : m === "jazzcash" ? "JazzCash" : "EasyPaisa"}
                         </button>
@@ -260,83 +277,83 @@ export default function CheckoutPage() {
 
                     {/* Account details */}
                     {manualMethod === "bank" && (
-                      <div className="pay-info">
-                        <p className="pay-info__heading">{BANK_DETAILS.bankName}</p>
-                        <div className="pay-info__row">
-                          <span>Account Title</span>
-                          <strong>{BANK_DETAILS.title}</strong>
+                      <div className="bg-soft border border-line rounded-card p-5 text-sm">
+                        <p className="font-serif text-base font-normal text-ink mb-3">{BANK_DETAILS.bankName}</p>
+                        <div className="flex justify-between py-1.5 border-b border-line/50">
+                          <span className="text-muted">Account Title</span>
+                          <strong className="text-ink font-medium">{BANK_DETAILS.title}</strong>
                         </div>
-                        <div className="pay-info__row">
-                          <span>Account No.</span>
-                          <strong>{BANK_DETAILS.account}</strong>
+                        <div className="flex justify-between py-1.5 border-b border-line/50">
+                          <span className="text-muted">Account No.</span>
+                          <strong className="text-ink font-medium">{BANK_DETAILS.account}</strong>
                         </div>
-                        <div className="pay-info__row">
-                          <span>IBAN</span>
-                          <strong>{BANK_DETAILS.iban}</strong>
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-muted">IBAN</span>
+                          <strong className="text-ink font-medium">{BANK_DETAILS.iban}</strong>
                         </div>
-                        <p className="pay-info__note">Transfer the total amount, then upload your payment receipt below.</p>
+                        <p className="text-muted text-xs mt-3 leading-relaxed">Transfer the total amount, then upload your payment receipt below.</p>
                       </div>
                     )}
 
                     {manualMethod === "jazzcash" && (
-                      <div className="pay-info">
-                        <div className="pay-mobile-grid">
-                          <div className="pay-mobile-card pay-mobile-card--jazz">
-                            <p className="pay-mobile-card__brand">JazzCash</p>
-                            <p className="pay-mobile-card__label">Diamond Loft</p>
-                            <p className="pay-mobile-card__number">{JAZZCASH_NUMBER}</p>
+                      <div className="bg-soft border border-line rounded-card p-5 text-sm">
+                        <div className="mb-3">
+                          <div className="border border-line rounded p-4 bg-surface inline-block">
+                            <p className="text-xs uppercase tracking-[0.15em] text-muted mb-1">JazzCash</p>
+                            <p className="text-sm text-ink font-medium">Diamond Loft</p>
+                            <p className="text-base font-serif text-gold-dark">{JAZZCASH_NUMBER}</p>
                           </div>
                         </div>
-                        <p className="pay-info__note">Send the amount to the above JazzCash number, then upload your receipt screenshot below.</p>
+                        <p className="text-muted text-xs leading-relaxed">Send the amount to the above JazzCash number, then upload your receipt screenshot below.</p>
                       </div>
                     )}
 
                     {manualMethod === "easypaisa" && (
-                      <div className="pay-info">
-                        <div className="pay-mobile-grid">
-                          <div className="pay-mobile-card pay-mobile-card--easy">
-                            <p className="pay-mobile-card__brand">EasyPaisa</p>
-                            <p className="pay-mobile-card__label">Diamond Loft</p>
-                            <p className="pay-mobile-card__number">{EASYPAISA_NUMBER}</p>
+                      <div className="bg-soft border border-line rounded-card p-5 text-sm">
+                        <div className="mb-3">
+                          <div className="border border-line rounded p-4 bg-surface inline-block">
+                            <p className="text-xs uppercase tracking-[0.15em] text-muted mb-1">EasyPaisa</p>
+                            <p className="text-sm text-ink font-medium">Diamond Loft</p>
+                            <p className="text-base font-serif text-gold-dark">{EASYPAISA_NUMBER}</p>
                           </div>
                         </div>
-                        <p className="pay-info__note">Send the amount to the above EasyPaisa number, then upload your receipt screenshot below.</p>
+                        <p className="text-muted text-xs leading-relaxed">Send the amount to the above EasyPaisa number, then upload your receipt screenshot below.</p>
                       </div>
                     )}
 
                     {/* Receipt upload */}
-                    <div style={{ marginTop: "16px" }}>
-                      <p className="co-label" style={{ marginBottom: "8px" }}>
-                        Payment Receipt <span style={{ color: "#c0392b" }}>*</span>
+                    <div className="mt-4">
+                      <p className="text-xs uppercase tracking-[0.15em] text-muted mb-2 block">
+                        Payment Receipt <span className="text-red-500">*</span>
                       </p>
                       <input
                         ref={fileRef}
                         type="file"
                         accept="image/*,application/pdf"
-                        style={{ display: "none" }}
+                        className="hidden"
                         onChange={handleReceiptUpload}
                       />
                       {!receiptUrl ? (
                         <button
                           type="button"
-                          className="co-upload-btn"
+                          className="w-full border border-dashed border-line py-3 text-sm text-muted hover:border-gold hover:text-gold transition disabled:opacity-50"
                           onClick={() => fileRef.current?.click()}
                           disabled={uploadingReceipt}
                         >
                           {uploadingReceipt ? "Uploading…" : "Upload Receipt"}
                         </button>
                       ) : (
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "8px" }}>
+                        <div className="flex items-center gap-3 mt-2">
                           <img
                             src={receiptUrl}
                             alt="Receipt preview"
-                            style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px", border: "1.5px solid var(--border)" }}
+                            className="w-20 h-20 object-cover rounded border border-line"
                           />
                           <div>
-                            <p style={{ fontSize: "13px", color: "#27ae60", fontWeight: 600, marginBottom: "4px" }}>Receipt uploaded</p>
+                            <p className="text-sm text-green-600 font-semibold mb-1">Receipt uploaded</p>
                             <button
                               type="button"
-                              style={{ fontSize: "12px", color: "var(--muted)", textDecoration: "underline" }}
+                              className="text-xs text-muted underline hover:text-ink transition"
                               onClick={() => { setReceiptUrl(null); if (fileRef.current) fileRef.current.value = ""; }}
                             >
                               Change
@@ -344,7 +361,7 @@ export default function CheckoutPage() {
                           </div>
                         </div>
                       )}
-                      {uploadError && <p className="co-error">{uploadError}</p>}
+                      {uploadError && <p className="text-xs text-red-500 mt-1">{uploadError}</p>}
                     </div>
                   </div>
                 )}
@@ -353,42 +370,45 @@ export default function CheckoutPage() {
 
             {/* Right column: order summary + CTA */}
             <div>
-              <div className="co-card" style={{ position: "sticky", top: "90px" }}>
-                <h2 className="co-card__title">Order Summary</h2>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+              <div className="bg-surface rounded-card shadow-card p-6 md:p-8 sticky top-[90px]">
+                <h2 className="font-serif text-xl font-normal text-ink mb-5">Order Summary</h2>
+                <div className="flex flex-col">
                   {items.map((item) => (
-                    <div key={item.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px dashed var(--border)", fontSize: "13px" }}>
-                      <span style={{ color: "var(--charcoal)" }}>
-                        {item.name} <span style={{ color: "var(--muted)" }}>× {item.qty}</span>
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-center py-2.5 border-b border-dashed border-line text-sm"
+                    >
+                      <span className="text-ink">
+                        {item.name}{" "}
+                        <span className="text-muted">× {item.qty}</span>
                       </span>
-                      <span style={{ fontWeight: 600, color: "var(--charcoal)" }}>
+                      <span className="font-semibold text-ink">
                         {formatPrice(item.price * item.qty)}
                       </span>
                     </div>
                   ))}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0 0", fontSize: "16px", fontWeight: 700, color: "var(--charcoal)" }}>
+                  <div className="flex justify-between items-center pt-3.5 text-base font-bold text-ink">
                     <span>Total</span>
-                    <span style={{ color: "var(--gold-dark)" }}>{formatPrice(totalPrice)}</span>
+                    <span className="text-gold-dark">{formatPrice(totalPrice)}</span>
                   </div>
                 </div>
 
                 {submitError && (
-                  <div style={{ marginTop: "14px", background: "#fdf0f0", border: "1px solid #f5c6cb", borderRadius: "8px", padding: "10px 14px", fontSize: "13px", color: "#c0392b" }}>
+                  <div className="bg-red-50 border border-red-200 rounded p-3 text-xs text-red-600 mt-4">
                     {submitError}
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  className="co-place-btn"
+                  className="w-full bg-ink-deep text-[#f1e6cf] py-3 uppercase tracking-[0.2em] text-xs font-medium hover:bg-gold transition disabled:opacity-50 mt-5"
                   disabled={submitting}
-                  style={{ marginTop: "20px" }}
                 >
                   {submitting ? "Placing Order…" : "Place Order"}
                 </button>
 
-                <p style={{ fontSize: "11px", color: "var(--muted)", textAlign: "center", marginTop: "10px", lineHeight: 1.5 }}>
-                  By placing your order you agree to our terms & conditions.
+                <p className="text-[11px] text-muted text-center mt-2.5 leading-relaxed">
+                  By placing your order you agree to our terms &amp; conditions.
                 </p>
               </div>
             </div>

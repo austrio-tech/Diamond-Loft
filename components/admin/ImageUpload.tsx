@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import styles from "./ImageUpload.module.css";
 
 interface ImageUploadProps {
   images: string[];
@@ -47,22 +46,26 @@ export default function ImageUpload({ images, onChange }: ImageUploadProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-col gap-3">
       {images.length > 0 && (
-        <div className={styles.thumbnails}>
+        <div className="flex flex-wrap gap-3">
           {images.map((url, i) => (
-            <div key={url + i} className={styles.thumbWrap}>
+            <div key={url + i} className="relative">
               <img
                 src={url}
                 alt={`Product image ${i + 1}`}
-                className={`${styles.thumb}${i === 0 ? ` ${styles.primary}` : ""}`}
+                className={`w-20 h-20 object-cover rounded border ${
+                  i === 0 ? "border-gold" : "border-line"
+                }`}
               />
               {i === 0 && (
-                <span className={styles.primaryLabel}>Primary</span>
+                <span className="absolute bottom-0 left-0 right-0 text-center text-[10px] bg-gold/80 text-white rounded-b py-0.5">
+                  Primary
+                </span>
               )}
               <button
                 type="button"
-                className={styles.removeBtn}
+                className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600 transition-colors leading-none"
                 onClick={() => handleRemove(i)}
                 aria-label="Remove image"
               >
@@ -75,7 +78,7 @@ export default function ImageUpload({ images, onChange }: ImageUploadProps) {
 
       <button
         type="button"
-        className={styles.uploadBtn}
+        className="inline-flex items-center gap-1.5 px-4 py-2 border border-dashed border-line rounded text-sm text-muted hover:border-gold hover:text-gold transition-colors disabled:opacity-50 self-start"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
       >
@@ -86,7 +89,7 @@ export default function ImageUpload({ images, onChange }: ImageUploadProps) {
         ref={inputRef}
         type="file"
         accept="image/*"
-        style={{ display: "none" }}
+        className="hidden"
         onChange={handleFileChange}
       />
     </div>

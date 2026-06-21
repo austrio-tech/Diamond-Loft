@@ -16,6 +16,8 @@ import { useWishlist } from "@/context/WishlistContext";
 import { calcDiscount, formatPrice, badgeSlug, STORE_INFO } from "@/lib/utils";
 import type { Product } from "@/types";
 import ProductCard from "./ProductCard";
+import Reveal from "@/components/motion/Reveal";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 
 const FALLBACK_IMG =
   "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80";
@@ -47,94 +49,99 @@ export default function ProductDetailClient({ product, related }: Props) {
   );
   const waHref = `https://wa.me/${STORE_INFO.whatsappClean}?text=${waMsg}`;
 
-  // Build the full image list (primary + extras)
   const allImages =
     product.images && product.images.length > 0
       ? product.images
       : [product.image];
 
   return (
-    <div className="pd-page">
-      <div className="container">
+    <div className="bg-page min-h-screen">
+      <div className="container-site py-8">
         {/* Breadcrumb */}
-        <nav className="pd-breadcrumb">
-          <ol className="breadcrumb">
+        <nav className="mb-8">
+          <ol className="flex items-center flex-wrap gap-1 text-[12px] text-muted">
             <li>
-              <Link href="/" className="breadcrumb__link">
+              <Link href="/" className="hover:text-gold transition-colors">
                 Home
               </Link>
             </li>
-            <li className="breadcrumb__sep">
-              <ChevronRight size={14} />
+            <li className="text-line">
+              <ChevronRight size={13} />
             </li>
             <li>
-              <Link href="/shop" className="breadcrumb__link">
+              <Link href="/shop" className="hover:text-gold transition-colors">
                 Shop
               </Link>
             </li>
             {product.category && (
               <>
-                <li className="breadcrumb__sep">
-                  <ChevronRight size={14} />
+                <li className="text-line">
+                  <ChevronRight size={13} />
                 </li>
                 <li>
                   <Link
                     href={`/shop?category=${product.category.slug}`}
-                    className="breadcrumb__link"
+                    className="hover:text-gold transition-colors"
                   >
                     {product.category.name}
                   </Link>
                 </li>
               </>
             )}
-            <li className="breadcrumb__sep">
-              <ChevronRight size={14} />
+            <li className="text-line">
+              <ChevronRight size={13} />
             </li>
-            <li>
-              <span className="breadcrumb__current breadcrumb__current--dark">
-                {product.name}
-              </span>
-            </li>
+            <li className="text-ink">{product.name}</li>
           </ol>
         </nav>
 
         {/* Main layout */}
-        <div className="pd-layout">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
           {/* Gallery */}
-          <div className="pd-gallery">
-            <div className="pd-gallery__main">
+          <div className="flex flex-col gap-3">
+            <div className="relative aspect-square border border-line rounded-card overflow-hidden bg-surface">
               <img
                 src={allImages[selectedImg] ?? product.image}
                 alt={product.name}
-                className="pd-gallery__img"
+                className="w-full h-full object-cover sepia-img"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
                 }}
               />
               {product.badge && (
                 <span
-                  className={`pd-gallery__badge pcard__badge--${badgeSlug(product.badge)}`}
+                  className={`absolute top-3 left-3 text-[10px] [font-variant:small-caps] tracking-wide px-2 py-0.5 rounded-card pcard__badge--${badgeSlug(product.badge)}`}
                 >
                   {product.badge}
                 </span>
               )}
               {!product.inStock && (
-                <div className="pd-gallery__oos-overlay">Out of Stock</div>
+                <div className="absolute inset-0 bg-ink/50 flex items-center justify-center">
+                  <span className="text-[#f1e6cf] [font-variant:small-caps] tracking-widest text-sm">
+                    Out of Stock
+                  </span>
+                </div>
               )}
             </div>
 
             {allImages.length > 1 && (
-              <div className="pd-gallery__thumbs">
+              <div className="flex gap-2 overflow-x-auto">
                 {allImages.map((src, idx) => (
                   <button
                     key={idx}
-                    className={`pd-gallery__thumb${idx === selectedImg ? " pd-gallery__thumb--active" : ""}`}
+                    className={[
+                      "w-16 h-16 flex-shrink-0 border rounded-card overflow-hidden transition-colors",
+                      idx === selectedImg
+                        ? "border-gold"
+                        : "border-line hover:border-gold",
+                    ].join(" ")}
                     onClick={() => setSelectedImg(idx)}
                     aria-label={`View image ${idx + 1}`}
                   >
                     <img
                       src={src}
                       alt={`${product.name} view ${idx + 1}`}
+                      className="w-full h-full object-cover sepia-img"
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = FALLBACK_IMG;
                       }}
@@ -146,117 +153,152 @@ export default function ProductDetailClient({ product, related }: Props) {
           </div>
 
           {/* Info */}
-          <div className="pd-info">
+          <div className="flex flex-col gap-5">
             {product.badge && (
               <span
-                className={`pcard__badge pd-badge pcard__badge--${badgeSlug(product.badge)}`}
+                className={`self-start text-[10px] [font-variant:small-caps] tracking-wide px-2 py-0.5 rounded-card pcard__badge--${badgeSlug(product.badge)}`}
               >
                 {product.badge}
               </span>
             )}
 
-            <h1 className="pd-info__name">{product.name}</h1>
+            <h1 className="font-serif text-[clamp(1.8rem,3vw,2.6rem)] text-ink font-medium leading-tight">
+              {product.name}
+            </h1>
 
-            <div className="pd-info__rating">
-              <div className="pd-info__stars">
+            {/* Rating */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    size={16}
-                    className={`pd-star${i < Math.round(product.rating) ? " pd-star--filled" : ""}`}
-                    fill={i < Math.round(product.rating) ? "currentColor" : "none"}
+                    size={14}
+                    className={
+                      i < Math.round(product.rating)
+                        ? "text-gold"
+                        : "text-line"
+                    }
+                    fill={
+                      i < Math.round(product.rating) ? "currentColor" : "none"
+                    }
                   />
                 ))}
               </div>
-              <span className="pd-info__rating-val">{product.rating}</span>
-              <span className="pd-info__reviews">
-                ({product.reviews} reviews)
+              <span className="text-sm text-muted">
+                {product.rating} ({product.reviews} reviews)
               </span>
             </div>
 
-            <div className="pd-info__price-row">
-              <span className="pd-info__price">
+            {/* Price */}
+            <div className="flex items-baseline gap-3 pb-4 border-b border-line">
+              <span className="font-serif text-2xl text-gold">
                 {formatPrice(product.price)}
               </span>
               {product.originalPrice !== null && (
-                <span className="pd-info__original">
+                <span className="text-muted text-base line-through">
                   {formatPrice(product.originalPrice)}
                 </span>
               )}
               {discount !== null && (
-                <span className="pd-info__save">Save {discount}%</span>
+                <span className="text-[11px] [font-variant:small-caps] tracking-wide bg-gold/15 text-gold-dark px-2 py-0.5 rounded-card">
+                  Save {discount}%
+                </span>
               )}
             </div>
 
             {product.description && (
-              <p className="pd-info__desc">{product.description}</p>
+              <p className="text-muted text-[15px] leading-relaxed">
+                {product.description}
+              </p>
             )}
 
-            <div className="pd-info__details">
-              {product.material && (
-                <div className="pd-detail">
-                  <span className="pd-detail__label">Material</span>
-                  <span className="pd-detail__val">{product.material}</span>
-                </div>
-              )}
-              {product.weight && (
-                <div className="pd-detail">
-                  <span className="pd-detail__label">Weight</span>
-                  <span className="pd-detail__val">{product.weight}</span>
-                </div>
-              )}
-              {product.size && (
-                <div className="pd-detail">
-                  <span className="pd-detail__label">Size</span>
-                  <span className="pd-detail__val">{product.size}</span>
-                </div>
-              )}
-            </div>
+            {/* Details */}
+            {(product.material || product.weight || product.size) && (
+              <div className="flex flex-col gap-2 py-3 border-y border-line">
+                {product.material && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted [font-variant:small-caps] tracking-wide">
+                      Material
+                    </span>
+                    <span className="text-ink">{product.material}</span>
+                  </div>
+                )}
+                {product.weight && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted [font-variant:small-caps] tracking-wide">
+                      Weight
+                    </span>
+                    <span className="text-ink">{product.weight}</span>
+                  </div>
+                )}
+                {product.size && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted [font-variant:small-caps] tracking-wide">
+                      Size
+                    </span>
+                    <span className="text-ink">{product.size}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {product.inStock ? (
               <>
-                <div className="pd-info__qty-row">
-                  <div className="qty-control">
+                {/* Qty + Add to cart */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-line rounded-card">
                     <button
-                      className="qty-btn"
+                      className="w-9 h-10 flex items-center justify-center text-muted hover:text-gold transition-colors"
                       onClick={() => setQty((q) => Math.max(1, q - 1))}
                       aria-label="Decrease quantity"
                     >
-                      <span>−</span>
+                      −
                     </button>
-                    <span className="qty-val">{qty}</span>
+                    <span className="w-8 text-center text-ink text-sm">
+                      {qty}
+                    </span>
                     <button
-                      className="qty-btn"
+                      className="w-9 h-10 flex items-center justify-center text-muted hover:text-gold transition-colors"
                       onClick={() => setQty((q) => q + 1)}
                       aria-label="Increase quantity"
                     >
-                      <span>+</span>
+                      +
                     </button>
                   </div>
 
                   <button
-                    className={`pd-add-btn${added ? " pd-add-btn--added" : ""}`}
+                    className={[
+                      "flex-1 flex items-center justify-center gap-2 py-3 text-sm [font-variant:small-caps] tracking-widest transition-colors",
+                      added
+                        ? "bg-gold text-[#f7efe0]"
+                        : "bg-ink-deep text-[#f1e6cf] hover:bg-ink",
+                    ].join(" ")}
                     onClick={handleAddToCart}
                   >
                     {added ? (
                       <>
-                        <Star size={18} /> Added!
+                        <Star size={15} /> Added!
                       </>
                     ) : (
                       <>
-                        <ShoppingBag size={18} /> Add to Cart
+                        <ShoppingBag size={15} /> Add to Cart
                       </>
                     )}
                   </button>
 
                   <button
-                    className={`pd-wish-btn${wished ? " pd-wish-btn--active" : ""}`}
+                    className={[
+                      "w-11 h-11 flex items-center justify-center border rounded-card transition-colors",
+                      wished
+                        ? "border-gold text-gold"
+                        : "border-line text-muted hover:border-gold hover:text-gold",
+                    ].join(" ")}
                     onClick={() => toggle(product.id)}
                     aria-label={
                       wished ? "Remove from wishlist" : "Add to wishlist"
                     }
                   >
-                    <Heart size={20} />
+                    <Heart size={17} fill={wished ? "currentColor" : "none"} />
                   </button>
                 </div>
 
@@ -264,45 +306,50 @@ export default function ProductDetailClient({ product, related }: Props) {
                   href={waHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pd-wa-btn"
+                  className="flex items-center justify-center gap-2 border border-[#25d366] text-[#25d366] py-3 text-sm [font-variant:small-caps] tracking-wide hover:bg-[#25d366] hover:text-white transition-colors rounded-card"
                 >
-                  <MessageCircle size={18} /> Ask on WhatsApp
+                  <MessageCircle size={16} /> Ask on WhatsApp
                 </a>
               </>
             ) : (
-              <p className="pd-oos-msg">
+              <p className="text-muted text-sm italic">
                 This item is currently out of stock. Contact us on WhatsApp to
                 be notified.
               </p>
             )}
 
-            {/* Trust icons */}
-            <div className="pd-trust">
-              <div className="pd-trust-item">
-                <Truck size={18} />
-                <span>Free delivery on orders over PKR 3,000</span>
-              </div>
-              <div className="pd-trust-item">
-                <RefreshCw size={18} />
-                <span>7-day easy returns</span>
-              </div>
-              <div className="pd-trust-item">
-                <Shield size={18} />
-                <span>Secure &amp; trusted checkout</span>
-              </div>
+            {/* Trust strip */}
+            <div className="flex flex-col gap-2.5 pt-4 border-t border-line">
+              {[
+                { Icon: Truck, text: "Free delivery on orders over PKR 3,000" },
+                { Icon: RefreshCw, text: "7-day easy returns" },
+                { Icon: Shield, text: "Secure & trusted checkout" },
+              ].map(({ Icon, text }) => (
+                <div key={text} className="flex items-center gap-2.5 text-sm text-muted">
+                  <Icon size={15} className="text-gold flex-shrink-0" strokeWidth={1.5} />
+                  <span>{text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Related Products */}
         {related.length > 0 && (
-          <section className="pd-related">
-            <h2>You May Also Like</h2>
-            <div className="pd-related__grid">
+          <section>
+            <div className="ornament mb-10">❦</div>
+            <Reveal className="text-center mb-10">
+              <h2 className="font-serif text-[clamp(1.6rem,3vw,2.2rem)] text-ink font-medium">
+                You May Also Like
+              </h2>
+            </Reveal>
+            <Stagger className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <StaggerItem key={p.id}>
+                  <ProductCard product={p} />
+                </StaggerItem>
               ))}
-            </div>
+            </Stagger>
           </section>
         )}
       </div>

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { OrderStatus, PaymentStatus } from "@/types";
 import StatusDropdown from "./StatusDropdown";
-import styles from "./OrderDetailControls.module.css";
 
 interface Props {
   orderId: number;
@@ -45,16 +44,16 @@ export default function OrderDetailControls({ orderId, status, paymentStatus }: 
   }
 
   return (
-    <div className={styles.controls}>
-      <div className={styles.statusSection}>
-        <span className={styles.fieldLabel}>Order Status</span>
+    <div className="flex flex-col gap-4">
+      <div>
+        <span className="text-xs uppercase tracking-[0.2em] text-muted block mb-1">Order Status</span>
         <StatusDropdown value={status} onChange={handleStatusChange} busy={busy} />
       </div>
 
       {paymentStatus === "unpaid" && (
         <button
           type="button"
-          className={styles.confirmBtn}
+          className="mt-2 px-4 py-2 bg-gold text-white text-sm font-medium rounded hover:opacity-90 disabled:opacity-50 transition-opacity"
           onClick={handleConfirmPayment}
           disabled={busy}
         >

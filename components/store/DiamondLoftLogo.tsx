@@ -9,7 +9,7 @@ export default function DiamondLoftLogo({
   className = "",
   light = false,
 }: Props) {
-  const mainColor = light ? "#ffffff" : "#2c2c2c";
+  const mainColor = light ? "#f1e6cf" : "var(--charcoal)";
 
   return (
     <svg
@@ -23,7 +23,7 @@ export default function DiamondLoftLogo({
     >
       <path
         d="M24 2 L16 13 L2 24 L24 54 L46 24 L32 13 Z"
-        stroke="#b8963e"
+        stroke="#9c7c4a"
         strokeWidth="1.5"
         strokeLinejoin="round"
       />
@@ -32,7 +32,7 @@ export default function DiamondLoftLogo({
         y1="13"
         x2="32"
         y2="13"
-        stroke="#b8963e"
+        stroke="#9c7c4a"
         strokeWidth="1"
         opacity="0.65"
       />
@@ -41,7 +41,7 @@ export default function DiamondLoftLogo({
         y1="24"
         x2="46"
         y2="24"
-        stroke="#b8963e"
+        stroke="#9c7c4a"
         strokeWidth="0.7"
         opacity="0.45"
       />
@@ -50,7 +50,7 @@ export default function DiamondLoftLogo({
         y1="24"
         x2="24"
         y2="54"
-        stroke="#b8963e"
+        stroke="#9c7c4a"
         strokeWidth="0.7"
         opacity="0.35"
       />
@@ -59,7 +59,7 @@ export default function DiamondLoftLogo({
         y1="13"
         x2="24"
         y2="24"
-        stroke="#b8963e"
+        stroke="#9c7c4a"
         strokeWidth="0.7"
         opacity="0.35"
       />
@@ -68,15 +68,15 @@ export default function DiamondLoftLogo({
         y1="13"
         x2="24"
         y2="24"
-        stroke="#b8963e"
+        stroke="#9c7c4a"
         strokeWidth="0.7"
         opacity="0.35"
       />
-      <path d="M24 2 L32 13 L16 13 Z" fill="#b8963e" fillOpacity="0.25" />
-      <path d="M24 2 L16 13 L2 24 Z" fill="#b8963e" fillOpacity="0.09" />
-      <path d="M24 2 L32 13 L46 24 Z" fill="#b8963e" fillOpacity="0.17" />
-      <path d="M2 24 L24 24 L24 54 Z" fill="#b8963e" fillOpacity="0.09" />
-      <path d="M46 24 L24 24 L24 54 Z" fill="#b8963e" fillOpacity="0.14" />
+      <path d="M24 2 L32 13 L16 13 Z" fill="#9c7c4a" fillOpacity="0.25" />
+      <path d="M24 2 L16 13 L2 24 Z" fill="#9c7c4a" fillOpacity="0.09" />
+      <path d="M24 2 L32 13 L46 24 Z" fill="#9c7c4a" fillOpacity="0.17" />
+      <path d="M2 24 L24 24 L24 54 Z" fill="#9c7c4a" fillOpacity="0.09" />
+      <path d="M46 24 L24 24 L24 54 Z" fill="#9c7c4a" fillOpacity="0.14" />
       <text
         x="62"
         y="27"
@@ -94,7 +94,7 @@ export default function DiamondLoftLogo({
         fontFamily="var(--font-serif)"
         fontSize="12"
         fontWeight="500"
-        fill="#b8963e"
+        fill="#9c7c4a"
         letterSpacing="7"
       >
         LOFT

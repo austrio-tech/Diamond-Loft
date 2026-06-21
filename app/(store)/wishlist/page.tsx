@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useWishlist } from "@/context/WishlistContext";
 import ProductCard from "@/components/store/ProductCard";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { Product } from "@/types";
 
 export default function WishlistPage() {
@@ -42,36 +43,55 @@ export default function WishlistPage() {
 
   if (loading) {
     return (
-      <div className="container" style={{ paddingTop: "6rem", paddingBottom: "6rem", textAlign: "center" }}>
-        <p>Loading your wishlist…</p>
+      <div className="mx-auto max-w-[1380px] px-6 py-24 text-center">
+        <p className="text-muted font-body">Loading your wishlist…</p>
       </div>
     );
   }
 
   if (ids.size === 0 || products.length === 0) {
     return (
-      <div className="container" style={{ paddingTop: "6rem", paddingBottom: "6rem", textAlign: "center" }}>
-        <Heart size={52} strokeWidth={1.2} style={{ opacity: 0.3, marginBottom: "1rem" }} />
-        <h2 style={{ marginBottom: "0.75rem" }}>Your wishlist is empty</h2>
-        <p style={{ marginBottom: "1.5rem", opacity: 0.6 }}>
+      <div className="mx-auto max-w-[1380px] px-6 py-24 flex flex-col items-center text-center">
+        <Heart
+          size={52}
+          strokeWidth={1.2}
+          className="text-muted opacity-30 mb-5"
+        />
+        <h2 className="font-serif text-3xl text-ink font-light mb-3">
+          Your wishlist is empty
+        </h2>
+        <p className="text-muted text-sm leading-relaxed mb-7 max-w-sm">
           Save pieces you love and come back to them anytime.
         </p>
-        <Link href="/shop" className="btn btn--primary">Browse Jewellery</Link>
+        <Link
+          href="/shop"
+          className="inline-block border border-gold text-gold hover:bg-gold hover:text-white transition-colors px-8 py-3 uppercase tracking-[0.2em] text-xs"
+        >
+          Browse Jewellery
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="container" style={{ paddingTop: "4rem", paddingBottom: "5rem" }}>
-      <div className="section-header">
-        <p className="section-label">Saved Items</p>
-        <h1 className="section-title">Your Wishlist</h1>
+    <div className="mx-auto max-w-[1380px] px-6 py-16">
+      {/* Section header */}
+      <div className="mb-10 text-center">
+        <p className="uppercase tracking-[0.25em] text-xs text-gold mb-2">
+          Saved Items
+        </p>
+        <h1 className="font-serif text-4xl md:text-5xl text-ink font-light">
+          Your Wishlist
+        </h1>
       </div>
-      <div className="shop-page__grid">
+
+      <Stagger className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
+          <StaggerItem key={p.id}>
+            <ProductCard product={p} />
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import InfoPage, { infoStyles as styles } from "@/components/store/InfoPage";
+import InfoPage from "@/components/store/InfoPage";
 
 export const metadata: Metadata = {
   title: "Shipping",
@@ -15,7 +15,7 @@ export default function ShippingPage() {
       </p>
 
       <h2>Delivery Timeframes</h2>
-      <table className={styles.table}>
+      <table>
         <thead>
           <tr><th>Region</th><th>Estimated Delivery</th></tr>
         </thead>

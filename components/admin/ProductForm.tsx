@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Product, Category, BadgeType } from "@/types";
 import ImageUpload from "./ImageUpload";
-import styles from "./ProductForm.module.css";
 
 type BadgeOption = "None" | BadgeType;
 
@@ -12,6 +11,10 @@ interface ProductFormProps {
   product?: Product;
   categories: Category[];
 }
+
+const inputCls =
+  "w-full bg-page border border-line rounded px-3 py-2 text-sm text-ink focus:outline-none focus:border-gold transition-colors";
+const labelCls = "block text-xs uppercase tracking-[0.2em] text-muted mb-1.5";
 
 export default function ProductForm({ product, categories }: ProductFormProps) {
   const router = useRouter();
@@ -26,9 +29,7 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
   const [material, setMaterial] = useState(product?.material ?? "");
   const [weight, setWeight] = useState(product?.weight ?? "");
   const [size, setSize] = useState(product?.size ?? "");
-  const [badge, setBadge] = useState<BadgeOption>(
-    product?.badge ?? "None"
-  );
+  const [badge, setBadge] = useState<BadgeOption>(product?.badge ?? "None");
   const [inStock, setInStock] = useState(product?.inStock ?? true);
   const [featured, setFeatured] = useState(product?.featured ?? false);
   const [images, setImages] = useState<string[]>(product?.images ?? []);
@@ -68,9 +69,7 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
 
     setSubmitting(true);
     try {
-      const url = product
-        ? `/api/products/${product.id}`
-        : "/api/products";
+      const url = product ? `/api/products/${product.id}` : "/api/products";
       const method = product ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -94,17 +93,15 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
       {/* Row 1: Name + Category */}
-      <div className={styles.grid}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-name">
-            Name
-          </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-name">Name</label>
           <input
             id="pf-name"
             type="text"
-            className={styles.input}
+            className={inputCls}
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Product name"
@@ -112,13 +109,11 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
           />
         </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-category">
-            Category
-          </label>
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-category">Category</label>
           <select
             id="pf-category"
-            className={styles.select}
+            className={inputCls}
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             required
@@ -134,17 +129,15 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Row 2: Price + Original Price */}
-      <div className={styles.grid}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-price">
-            Price (PKR)
-          </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-price">Price (PKR)</label>
           <input
             id="pf-price"
             type="number"
             min="0"
             step="any"
-            className={styles.input}
+            className={inputCls}
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="0"
@@ -152,16 +145,14 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
           />
         </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-original-price">
-            Original Price (optional)
-          </label>
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-original-price">Original Price (optional)</label>
           <input
             id="pf-original-price"
             type="number"
             min="0"
             step="any"
-            className={styles.input}
+            className={inputCls}
             value={originalPrice}
             onChange={(e) => setOriginalPrice(e.target.value)}
             placeholder="0"
@@ -170,13 +161,12 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Description */}
-      <div className={styles.field}>
-        <label className={styles.label} htmlFor="pf-description">
-          Description
-        </label>
+      <div className="flex flex-col">
+        <label className={labelCls} htmlFor="pf-description">Description</label>
         <textarea
           id="pf-description"
-          className={styles.textarea}
+          className={`${inputCls} resize-y`}
+          rows={4}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Product description…"
@@ -184,29 +174,25 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Row 3: Material + Weight */}
-      <div className={styles.grid}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-material">
-            Material
-          </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-material">Material</label>
           <input
             id="pf-material"
             type="text"
-            className={styles.input}
+            className={inputCls}
             value={material}
             onChange={(e) => setMaterial(e.target.value)}
             placeholder="e.g. 22K Gold"
           />
         </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-weight">
-            Weight
-          </label>
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-weight">Weight</label>
           <input
             id="pf-weight"
             type="text"
-            className={styles.input}
+            className={inputCls}
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             placeholder="e.g. 5g"
@@ -215,28 +201,24 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Row 4: Size + Badge */}
-      <div className={styles.grid}>
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-size">
-            Size
-          </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-size">Size</label>
           <input
             id="pf-size"
             type="text"
-            className={styles.input}
+            className={inputCls}
             value={size}
             onChange={(e) => setSize(e.target.value)}
             placeholder="e.g. Free size"
           />
         </div>
 
-        <div className={styles.field}>
-          <label className={styles.label} htmlFor="pf-badge">
-            Badge
-          </label>
+        <div className="flex flex-col">
+          <label className={labelCls} htmlFor="pf-badge">Badge</label>
           <select
             id="pf-badge"
-            className={styles.select}
+            className={inputCls}
             value={badge}
             onChange={(e) => setBadge(e.target.value as BadgeOption)}
           >
@@ -250,47 +232,47 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Checkboxes */}
-      <div className={styles.grid}>
-        <label className={styles.checkboxRow}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
+            className="accent-amber-600 w-4 h-4"
             checked={inStock}
             onChange={(e) => setInStock(e.target.checked)}
           />
-          <span className={styles.label}>In Stock</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-muted">In Stock</span>
         </label>
 
-        <label className={styles.checkboxRow}>
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
+            className="accent-amber-600 w-4 h-4"
             checked={featured}
             onChange={(e) => setFeatured(e.target.checked)}
           />
-          <span className={styles.label}>Featured</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-muted">Featured</span>
         </label>
       </div>
 
       {/* Images */}
-      <div className={styles.field}>
-        <span className={styles.label}>Images</span>
+      <div className="flex flex-col gap-1.5">
+        <span className={labelCls}>Images</span>
         <ImageUpload images={images} onChange={setImages} />
       </div>
 
       {/* Error */}
-      {error && <p className={styles.error}>{error}</p>}
+      {error && (
+        <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+      )}
 
       {/* Submit */}
       <div>
         <button
           type="submit"
-          className={styles.submitBtn}
+          className="px-6 py-2.5 bg-ink-deep text-gold text-sm font-medium rounded hover:opacity-90 disabled:opacity-50 transition-opacity"
           disabled={submitting}
         >
-          {submitting
-            ? "Saving…"
-            : product
-            ? "Update Product"
-            : "Create Product"}
+          {submitting ? "Saving…" : product ? "Update Product" : "Create Product"}
         </button>
       </div>
     </form>

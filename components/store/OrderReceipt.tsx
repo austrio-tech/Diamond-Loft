@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Printer, Download, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, paymentMethodLabel, STORE_INFO } from "@/lib/utils";
+import { overlay, modalPop } from "@/lib/motion";
 import type { OrderItem } from "@/types";
 
 export interface ReceiptData {
@@ -138,154 +140,135 @@ export default function OrderReceipt({ order }: { order: ReceiptData }) {
     }
   }
 
-  const rowStyle: React.CSSProperties = {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: 12,
-    fontSize: 13,
-    padding: "4px 0",
-  };
-
   return (
     <>
+      {/* Trigger button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-          width: "100%",
-          padding: "12px 20px",
-          borderRadius: "8px",
-          border: "1.5px solid var(--gold)",
-          background: "var(--white)",
-          color: "var(--gold-dark)",
-          fontSize: "14px",
-          fontWeight: 600,
-          letterSpacing: "0.5px",
-        }}
+        className="w-full flex items-center justify-center gap-2 py-3 px-5 border border-gold text-gold-dark text-[13px] [font-variant:small-caps] tracking-[0.15em] rounded-card hover:bg-gold hover:text-[#f7efe0] transition-colors"
       >
-        <Printer size={16} /> Print Receipt
+        <Printer size={15} /> Print Receipt
       </button>
 
-      {open && (
-        <div
-          onClick={() => setOpen(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(44,44,44,0.5)",
-            zIndex: 1000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 20,
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              background: "var(--white)",
-              borderRadius: "var(--radius)",
-              maxWidth: 480,
-              width: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
-              boxShadow: "0 20px 60px rgba(44,44,44,0.3)",
-            }}
-          >
-            {/* Modal header */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "16px 20px",
-                borderBottom: "1px solid var(--border)",
-              }}
+      {/* Modal */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              key="receipt-overlay"
+              variants={overlay}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              className="fixed inset-0 z-50 bg-ink/60 flex items-center justify-center p-5"
+              onClick={() => setOpen(false)}
             >
-              <strong style={{ fontFamily: "var(--font-serif)", fontSize: 18 }}>
-                Receipt
-              </strong>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Close"
-                style={{ color: "var(--muted)" }}
+              {/* Modal panel */}
+              <motion.div
+                key="receipt-modal"
+                variants={modalPop}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+                className="bg-surface border border-line rounded-card w-full max-w-[480px] max-h-[90vh] overflow-y-auto shadow-card-hover"
+                onClick={(e) => e.stopPropagation()}
               >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Receipt body */}
-            <div style={{ padding: 24 }}>
-              <div style={{ textAlign: "center", marginBottom: 20 }}>
-                <div style={{ fontFamily: "var(--font-serif)", fontSize: 22, color: "var(--charcoal)" }}>
-                  {STORE_INFO.name}
+                {/* Modal header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-line">
+                  <span className="font-serif text-xl text-ink">Receipt</span>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    aria-label="Close"
+                    className="text-muted hover:text-gold transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
                 </div>
-                <div style={{ fontSize: 12, color: "var(--muted)" }}>{STORE_INFO.tagline}</div>
-              </div>
 
-              <div style={{ ...rowStyle }}>
-                <span style={{ color: "var(--muted)" }}>Order</span>
-                <span style={{ fontWeight: 600 }}>#{order.id}</span>
-              </div>
-              <div style={{ ...rowStyle }}>
-                <span style={{ color: "var(--muted)" }}>Date</span>
-                <span>{dateStr}</span>
-              </div>
-              <div style={{ ...rowStyle }}>
-                <span style={{ color: "var(--muted)" }}>Customer</span>
-                <span style={{ textAlign: "right" }}>{order.name}</span>
-              </div>
-              <div style={{ ...rowStyle }}>
-                <span style={{ color: "var(--muted)" }}>Address</span>
-                <span style={{ textAlign: "right" }}>{order.address}, {order.city}</span>
-              </div>
-              <div style={{ ...rowStyle }}>
-                <span style={{ color: "var(--muted)" }}>Payment</span>
-                <span style={{ textAlign: "right" }}>
-                  {paymentMethodLabel(order.payMethod)} · {order.paymentStatusLabel}
-                </span>
-              </div>
+                {/* Receipt body */}
+                <div className="px-6 py-6">
+                  {/* Brand */}
+                  <div className="text-center mb-6">
+                    <div className="font-serif text-2xl text-ink tracking-wide">
+                      {STORE_INFO.name}
+                    </div>
+                    <div className="text-muted text-[12px] [font-variant:small-caps] tracking-wide mt-1">
+                      {STORE_INFO.tagline}
+                    </div>
+                    <div className="w-10 h-px bg-gold mx-auto mt-3" />
+                  </div>
 
-              <div style={{ borderTop: "1px solid var(--border)", margin: "16px 0" }} />
+                  {/* Meta rows */}
+                  {[
+                    { label: "Order", value: `#${order.id}` },
+                    { label: "Date", value: dateStr },
+                    { label: "Customer", value: order.name },
+                    { label: "Address", value: `${order.address}, ${order.city}` },
+                    {
+                      label: "Payment",
+                      value: `${paymentMethodLabel(order.payMethod)} · ${order.paymentStatusLabel}`,
+                    },
+                  ].map(({ label, value }) => (
+                    <div
+                      key={label}
+                      className="flex justify-between gap-3 text-[13px] py-1.5"
+                    >
+                      <span className="text-muted [font-variant:small-caps] tracking-wide">
+                        {label}
+                      </span>
+                      <span className="text-ink text-right">{value}</span>
+                    </div>
+                  ))}
 
-              {order.items.map((item, i) => (
-                <div key={i} style={{ ...rowStyle }}>
-                  <span>
-                    {item.name} <span style={{ color: "var(--muted)" }}>× {item.qty}</span>
-                  </span>
-                  <span style={{ fontWeight: 500 }}>{formatPrice(item.price * item.qty)}</span>
+                  <div className="h-px bg-line my-4" />
+
+                  {/* Items */}
+                  {order.items.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between gap-3 text-[13px] py-1.5"
+                    >
+                      <span className="text-ink">
+                        {item.name}{" "}
+                        <span className="text-muted">× {item.qty}</span>
+                      </span>
+                      <span className="text-ink font-medium">
+                        {formatPrice(item.price * item.qty)}
+                      </span>
+                    </div>
+                  ))}
+
+                  <div className="h-px bg-line my-4" />
+
+                  {/* Total */}
+                  <div className="flex justify-between items-baseline text-base">
+                    <span className="font-serif text-ink">Grand Total</span>
+                    <span className="font-serif text-xl text-gold">
+                      {formatPrice(order.total)}
+                    </span>
+                  </div>
                 </div>
-              ))}
 
-              <div style={{ borderTop: "1px solid var(--border)", margin: "16px 0" }} />
-
-              <div style={{ ...rowStyle, fontSize: 16, fontWeight: 700 }}>
-                <span>Grand Total</span>
-                <span style={{ color: "var(--gold-dark)" }}>{formatPrice(order.total)}</span>
-              </div>
-            </div>
-
-            {/* Download button */}
-            <div style={{ padding: "0 24px 24px" }}>
-              <button
-                type="button"
-                onClick={downloadPdf}
-                disabled={downloading}
-                className="btn btn--dark"
-                style={{ width: "100%", justifyContent: "center", gap: 8 }}
-              >
-                <Download size={16} />
-                {downloading ? "Preparing…" : "Download Receipt (PDF)"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                {/* Download button */}
+                <div className="px-6 pb-6">
+                  <button
+                    type="button"
+                    onClick={downloadPdf}
+                    disabled={downloading}
+                    className="w-full flex items-center justify-center gap-2 py-3 bg-ink-deep text-[#f1e6cf] text-[13px] [font-variant:small-caps] tracking-[0.15em] hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <Download size={15} />
+                    {downloading ? "Preparing…" : "Download Receipt (PDF)"}
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

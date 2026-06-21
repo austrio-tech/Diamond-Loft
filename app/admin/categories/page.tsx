@@ -1,24 +1,23 @@
 import { getCategories } from "@/lib/data";
 import CategoryForm from "@/components/admin/CategoryForm";
 import CategoryTable from "@/components/admin/CategoryTable";
-import styles from "./categories.module.css";
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.heading}>
+    <div className="bg-page min-h-screen p-8">
+      <h1 className="font-serif text-3xl text-ink mb-6">
         Categories{" "}
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "1rem", fontWeight: 400, color: "var(--muted)" }}>
+        <span className="font-body text-base font-normal text-muted ml-2">
           ({categories.length} total)
         </span>
       </h1>
 
       <CategoryTable categories={categories} />
 
-      <div className={styles.addSection}>
-        <p className={styles.addTitle}>+ Add Category</p>
+      <div className="mt-8 bg-surface border border-line rounded-card shadow-card p-6">
+        <p className="font-serif text-lg text-ink mb-4">+ Add Category</p>
         <CategoryForm />
       </div>
     </div>

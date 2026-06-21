@@ -8,16 +8,8 @@ export default async function NewProductPage() {
   })) as unknown as Category[];
 
   return (
-    <div style={{ padding: "32px" }}>
-      <h1
-        style={{
-          fontFamily: "var(--font-serif)",
-          fontSize: "2rem",
-          marginBottom: "24px",
-        }}
-      >
-        New Product
-      </h1>
+    <div className="bg-page min-h-screen p-8">
+      <h1 className="font-serif text-3xl text-ink mb-8">New Product</h1>
       <ProductForm categories={categories} />
     </div>
   );

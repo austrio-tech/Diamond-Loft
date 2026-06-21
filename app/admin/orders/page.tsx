@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import OrdersTable from "@/components/admin/OrdersTable";
 import type { Order, OrderStatus, OrderItem, PaymentMethod, PaymentStatus } from "@/types";
-import styles from "./orders.module.css";
 
 const STATUSES: OrderStatus[] = [
   "pending",
@@ -54,13 +53,17 @@ export default async function OrdersPage({
   }));
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.heading}>Orders</h1>
+    <div className="bg-page min-h-screen p-8">
+      <h1 className="font-serif text-3xl text-ink mb-6">Orders</h1>
 
-      <nav className={styles.tabs}>
+      <nav className="flex flex-wrap gap-1 mb-6 border-b border-line pb-1">
         <Link
           href="/admin/orders"
-          className={`${styles.tab} ${!status ? styles.tabActive : ""}`}
+          className={`px-4 py-2 text-sm transition-colors ${
+            !status
+              ? "text-gold-dark border-b-2 border-gold font-medium"
+              : "text-muted hover:text-ink"
+          }`}
         >
           All ({totalCount})
         </Link>
@@ -68,7 +71,11 @@ export default async function OrdersPage({
           <Link
             key={s}
             href={`/admin/orders?status=${s}`}
-            className={`${styles.tab} ${status === s ? styles.tabActive : ""}`}
+            className={`px-4 py-2 text-sm transition-colors ${
+              status === s
+                ? "text-gold-dark border-b-2 border-gold font-medium"
+                : "text-muted hover:text-ink"
+            }`}
           >
             {STATUS_LABELS[s]} ({countMap[s] ?? 0})
           </Link>

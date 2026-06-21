@@ -3,25 +3,38 @@
 import { useRouter } from "next/navigation";
 import { formatPrice, paymentMethodLabel } from "@/lib/utils";
 import type { Order, OrderStatus, PaymentStatus } from "@/types";
-import styles from "./OrdersTable.module.css";
 
-const PAYMENT_STATUS_COLORS: Record<PaymentStatus, { bg: string; color: string }> = {
-  unpaid: { bg: "#fdf0f0", color: "#c0392b" },
-  paid: { bg: "#e9f7ef", color: "#1a7a40" },
-  cod: { bg: "#fff8e7", color: "#856404" },
+const STATUS_BADGE_CLASSES: Record<OrderStatus, string> = {
+  pending:   "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+  confirmed: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
+  shipped:   "bg-violet-500/15 text-violet-700 dark:text-violet-400",
+  delivered: "bg-green-600/15 text-green-700 dark:text-green-500",
+  cancelled: "bg-red-500/15 text-red-700 dark:text-red-400",
 };
 
-const STATUS_COLORS: Record<OrderStatus, { bg: string; color: string }> = {
-  pending:   { bg: "#fff3e0", color: "#c9a96e" },
-  confirmed: { bg: "#e3f0ff", color: "#2f80ed" },
-  shipped:   { bg: "#f0ebff", color: "#8e6fd6" },
-  delivered: { bg: "#e4f9ec", color: "#1a7a40" },
-  cancelled: { bg: "#fdecea", color: "#c0392b" },
+const PAY_STATUS_BADGE_CLASSES: Record<PaymentStatus, string> = {
+  unpaid: "bg-red-500/15 text-red-700 dark:text-red-400",
+  paid:   "bg-green-600/15 text-green-700 dark:text-green-500",
+  cod:    "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+};
+
+const STATUS_DOT_CLASS: Record<OrderStatus, string> = {
+  pending:   "bg-amber-500",
+  confirmed: "bg-blue-500",
+  shipped:   "bg-violet-500",
+  delivered: "bg-green-600",
+  cancelled: "bg-red-500",
 };
 
 const STATUS_LABELS: Record<OrderStatus, string> = {
   pending: "Pending", confirmed: "Confirmed", shipped: "Shipped",
   delivered: "Delivered", cancelled: "Cancelled",
+};
+
+const PAY_STATUS_LABELS: Record<PaymentStatus, string> = {
+  unpaid: "Unpaid",
+  paid: "Paid",
+  cod: "COD",
 };
 
 interface Props {
@@ -32,71 +45,52 @@ export default function OrdersTable({ orders }: Props) {
   const router = useRouter();
 
   return (
-    <div className={styles.tableWrap}>
-      <table className={styles.table}>
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Customer</th>
-            <th>Phone</th>
-            <th>City</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Payment</th>
-            <th>Pay Status</th>
-            <th>Receipt</th>
-            <th>Status</th>
-            <th>Date</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">#</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Customer</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Phone</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">City</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Items</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Total</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Payment</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Pay Status</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Receipt</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Status</th>
+            <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-normal whitespace-nowrap">Date</th>
           </tr>
         </thead>
         <tbody>
           {orders.length === 0 && (
             <tr>
-              <td colSpan={11} style={{ textAlign: "center", color: "var(--muted)", padding: "32px 0" }}>
+              <td colSpan={11} className="text-center text-muted py-8 px-3">
                 No orders found.
               </td>
             </tr>
           )}
           {orders.map((order) => {
             const totalQty = order.items.reduce((s, i) => s + i.qty, 0);
-            const psColors = PAYMENT_STATUS_COLORS[order.paymentStatus];
-            const scColors = STATUS_COLORS[order.status];
             return (
               <tr
                 key={order.id}
-                className={styles.clickableRow}
+                className="cursor-pointer hover:bg-soft border-b border-line transition-colors"
                 onClick={() => router.push(`/admin/orders/${order.id}`)}
-                style={{ cursor: "pointer" }}
               >
-                <td>{order.id}</td>
-                <td>{order.name}</td>
-                <td>{order.phone}</td>
-                <td>{order.city}</td>
-                <td>{totalQty}</td>
-                <td>{formatPrice(order.total)}</td>
-                <td>{paymentMethodLabel(order.payMethod)}</td>
-                <td>
-                  <span
-                    style={{
-                      background: psColors.bg,
-                      color: psColors.color,
-                      fontSize: "11px",
-                      fontWeight: 600,
-                      padding: "2px 8px",
-                      borderRadius: "20px",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.4px",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {order.paymentStatus === "unpaid"
-                      ? "Unpaid"
-                      : order.paymentStatus === "paid"
-                      ? "Paid"
-                      : "COD"}
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{order.id}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{order.name}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{order.phone}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{order.city}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{totalQty}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{formatPrice(order.total)}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{paymentMethodLabel(order.payMethod)}</td>
+                <td className="py-3 px-3 whitespace-nowrap">
+                  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide ${PAY_STATUS_BADGE_CLASSES[order.paymentStatus]}`}>
+                    {PAY_STATUS_LABELS[order.paymentStatus]}
                   </span>
                 </td>
-                <td>
+                <td className="py-3 px-3 whitespace-nowrap">
                   {order.receiptUrl?.startsWith("/uploads/receipts/") ? (
                     <a
                       href={order.receiptUrl}
@@ -108,26 +102,21 @@ export default function OrdersTable({ orders }: Props) {
                       <img
                         src={order.receiptUrl}
                         alt="Receipt"
-                        style={{ width: "48px", height: "48px", objectFit: "cover", borderRadius: "6px", border: "1px solid var(--border)", display: "block" }}
+                        className="w-12 h-12 object-cover rounded border border-line block"
                         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                       />
                     </a>
                   ) : (
-                    <span style={{ color: "var(--muted)", fontSize: "13px" }}>—</span>
+                    <span className="text-muted text-sm">—</span>
                   )}
                 </td>
-                <td>
-                  <span style={{
-                    display: "inline-flex", alignItems: "center", gap: "6px",
-                    background: scColors.bg, color: scColors.color,
-                    borderRadius: "20px", padding: "3px 10px",
-                    fontSize: "11px", fontWeight: 600, whiteSpace: "nowrap"
-                  }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: scColors.color, flexShrink: 0 }} />
+                <td className="py-3 px-3 whitespace-nowrap">
+                  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium uppercase tracking-wide ${STATUS_BADGE_CLASSES[order.status]}`}>
+                    <span className={`w-2 h-2 rounded-full inline-block ${STATUS_DOT_CLASS[order.status]}`} />
                     {STATUS_LABELS[order.status]}
                   </span>
                 </td>
-                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                <td className="py-3 px-3 text-ink whitespace-nowrap">{new Date(order.createdAt).toLocaleDateString()}</td>
               </tr>
             );
           })}

@@ -6,7 +6,6 @@ import type { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import ActionMenu, { type ActionItem } from "@/components/admin/ActionMenu";
 import ConfirmModal from "@/components/admin/ConfirmModal";
-import styles from "./ProductTable.module.css";
 
 interface ProductTableProps {
   products: Product[];
@@ -75,56 +74,56 @@ export default function ProductTable({ products }: ProductTableProps) {
 
   return (
     <>
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-body font-normal">Image</th>
+              <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-body font-normal">Name</th>
+              <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-body font-normal">Price</th>
+              <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-body font-normal">Status</th>
+              <th className="text-left text-xs uppercase tracking-[0.2em] text-muted border-b border-line py-2 px-3 font-body font-normal">Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id}>
-                <td>
+              <tr key={p.id} className="border-b border-line hover:bg-soft transition-colors">
+                <td className="py-3 px-3 text-sm text-ink">
                   <img
                     src={p.image}
                     width={48}
                     height={48}
-                    style={{ objectFit: "cover", borderRadius: 4 }}
+                    className="w-12 h-12 object-cover rounded"
                     alt={p.name}
                   />
                 </td>
-                <td>
-                  <div>{p.name}</div>
+                <td className="py-3 px-3 text-sm text-ink">
+                  <div className="text-sm font-medium text-ink">{p.name}</div>
                   {p.category && (
-                    <div style={{ color: "var(--muted)", fontSize: "0.8rem" }}>
-                      {p.category.name}
-                    </div>
+                    <div className="text-xs text-muted mt-0.5">{p.category.name}</div>
                   )}
                 </td>
-                <td>{formatPrice(p.price)}</td>
-                <td>
-                  {p.featured && (
-                    <span className={`${styles.badge} ${styles.badgeFeatured}`}>
-                      Featured
-                    </span>
-                  )}
-                  {p.archived && (
-                    <span className={`${styles.badge} ${styles.badgeArchived}`}>
-                      Archived
-                    </span>
-                  )}
-                  {!p.inStock && (
-                    <span className={`${styles.badge} ${styles.badgeOutOfStock}`}>
-                      Out of Stock
-                    </span>
-                  )}
+                <td className="py-3 px-3 text-sm text-ink">{formatPrice(p.price)}</td>
+                <td className="py-3 px-3 text-sm text-ink">
+                  <div className="flex flex-wrap gap-1">
+                    {p.featured && (
+                      <span className="bg-gold/15 text-gold-dark text-xs px-2 py-0.5 rounded uppercase tracking-wide font-medium">
+                        Featured
+                      </span>
+                    )}
+                    {p.archived && (
+                      <span className="bg-soft text-muted text-xs px-2 py-0.5 rounded uppercase tracking-wide font-medium border border-line">
+                        Archived
+                      </span>
+                    )}
+                    {!p.inStock && (
+                      <span className="bg-red-500/15 text-red-700 dark:text-red-400 text-xs px-2 py-0.5 rounded uppercase tracking-wide font-medium">
+                        Out of Stock
+                      </span>
+                    )}
+                  </div>
                 </td>
-                <td>
+                <td className="py-3 px-3 text-sm text-ink">
                   <ActionMenu items={getActions(p)} />
                 </td>
               </tr>
