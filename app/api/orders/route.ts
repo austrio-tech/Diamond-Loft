@@ -7,6 +7,7 @@ import {
   STORE_INFO,
 } from "@/lib/utils";
 import { sendOrderNotification } from "@/lib/email";
+import { publishOrderEvent } from "@/lib/events";
 import type { CreateOrderPayload, OrderItem, PaymentMethod } from "@/types";
 
 const VALID_PAY_METHODS: PaymentMethod[] = [
@@ -116,6 +117,16 @@ export async function POST(req: Request) {
         paymentStatus: isCod ? "cod" : "unpaid",
         receiptUrl: !isCod ? receiptUrl : null,
       },
+    });
+
+    // Real-time: notify connected admin dashboards.
+    publishOrderEvent({
+      type: "order.created",
+      id: order.id,
+      name: order.name,
+      city: order.city,
+      total: order.total,
+      createdAt: order.createdAt.toISOString(),
     });
 
     // Notify the store (email + WhatsApp link for the customer).

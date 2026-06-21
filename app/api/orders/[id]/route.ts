@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/adminAuth";
+import { publishOrderEvent } from "@/lib/events";
 
 export async function PUT(
   req: Request,
@@ -20,6 +21,16 @@ export async function PUT(
       where: { id: Number(id) },
       data,
     });
+
+    // Real-time: notify admins (live list) and the customer tracking this order.
+    publishOrderEvent({
+      type: "order.updated",
+      id: order.id,
+      token: order.token,
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+    });
+
     return NextResponse.json({ ...order, items: JSON.parse(order.items) });
   } catch (err) {
     if (err instanceof Response) return err;
