@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diamond Loft — Mughal Heritage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:wght@400;500;600&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{ --green:#0f3d2e; --green-d:#0a2c21; --maroon:#5e1620; --gold:#caa44a; --gold-l:#ead79a; --cream:#f6efdd; --ink:#23201a; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Cormorant Garamond',serif;color:var(--ink);background:var(--cream);line-height:1.7}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .container{max-width:1180px;margin:0 auto;padding:0 36px}
+  .mar{font-family:'Marcellus',serif}
+  /* header */
+  .topbar{background:var(--maroon);color:var(--gold-l);text-align:center;font-size:13px;letter-spacing:4px;padding:8px;font-family:'Marcellus',serif}
+  header{background:linear-gradient(var(--green),var(--green-d));color:var(--cream);border-bottom:2px solid var(--gold)}
+  .brandrow{text-align:center;padding:22px 0 6px}
+  .crest{color:var(--gold-l);font-size:24px;letter-spacing:8px}
+  .brand{font-family:'Marcellus',serif;font-size:38px;letter-spacing:6px;color:var(--gold-l);margin:4px 0}
+  .brand-sub{font-size:13px;letter-spacing:5px;color:#dceadd;text-transform:uppercase}
+  nav{display:flex;justify-content:center;gap:34px;padding:14px 0 18px}
+  nav a{font-family:'Marcellus',serif;font-size:14px;letter-spacing:2px;color:#cfe3d3}
+  nav a:hover{color:var(--gold-l)}
+  /* hero with arch */
+  .hero{background:linear-gradient(var(--green-d),#06231a);padding:40px 20px 60px;text-align:center;color:var(--cream)}
+  .arch{position:relative;max-width:780px;margin:0 auto;overflow:hidden;
+    border:2px solid var(--gold);
+    border-radius:50% 50% 8px 8px / 70% 70% 8px 8px;
+    box-shadow:inset 0 0 0 6px rgba(202,164,74,.25);}
+  .arch img{width:100%;height:62vh;object-fit:cover;opacity:.62}
+  .arch .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px}
+  .crest2{color:var(--gold-l);font-size:22px;letter-spacing:6px;margin-bottom:10px}
+  .hero .ey{font-family:'Tangerine',cursive;font-size:46px;color:var(--gold-l);line-height:.8;margin-bottom:6px}
+  .hero h1{font-family:'Marcellus',serif;font-size:52px;letter-spacing:3px;line-height:1.15;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero p{max-width:440px;margin:16px auto 26px;color:#e8ddc6;font-size:17px}
+  .btn{display:inline-block;border:1px solid var(--gold-l);color:var(--gold-l);padding:12px 36px;font-family:'Marcellus',serif;letter-spacing:3px;font-size:14px}
+  .btn:hover{background:var(--gold-l);color:var(--green-d)}
+  /* motif divider */
+  .mdiv{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--gold);font-size:18px;margin:64px 0 40px;letter-spacing:6px}
+  .mdiv::before,.mdiv::after{content:"";height:2px;width:120px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  /* featured */
+  .head{text-align:center;margin-bottom:44px}
+  .head .ey{font-family:'Tangerine',cursive;font-size:42px;color:var(--maroon)}
+  .head h2{font-family:'Marcellus',serif;font-size:40px;letter-spacing:2px;color:var(--green)}
+  .products{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;padding-bottom:80px}
+  .card{text-align:center}
+  .card .ph{aspect-ratio:3/4;overflow:hidden;border:2px solid var(--gold);background:#fff;
+    border-radius:46% 46% 6px 6px / 30% 30% 6px 6px;}
+  .card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
+  .card:hover .ph img{transform:scale(1.06)}
+  .card h3{font-family:'Marcellus',serif;font-size:17px;margin:14px 0 2px;color:var(--green)}
+  .card .price{color:var(--maroon);font-size:16px;letter-spacing:1px;font-weight:600}
+  /* footer */
+  footer{background:linear-gradient(var(--green),var(--green-d));color:#cfe3d3;text-align:center;padding:54px 0;border-top:2px solid var(--gold)}
+  footer .brand{color:var(--gold-l);font-size:30px}
+  footer .crest{margin:12px 0}
+  footer p{letter-spacing:3px;font-size:14px}
+  @media(max-width:900px){.products{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:34px}nav{flex-wrap:wrap;gap:16px}.arch img{height:46vh}}
+</style>
+</head>
+<body>
+  <div class="topbar">۞ Handcrafted Heritage Jewellery ۞</div>
+  <header>
+    <div class="brandrow">
+      <div class="crest">۞</div>
+      <div class="brand">DIAMOND LOFT</div>
+      <div class="brand-sub">Heritage Jewellers · Est. 2025</div>
+    </div>
+    <nav><a>Home</a><a>Earrings</a><a>Pendants</a><a>Bracelets</a><a>Ear Tops</a><a>All Jewellery</a></nav>
+  </header>
+
+  <div class="hero">
+    <div class="arch">
+      <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=1600&q=85" alt="" />
+      <div class="inner">
+        <div class="crest2">۞</div>
+        <div class="ey">New Collection</div>
+        <h1>Elegance Crafted<br>for You</h1>
+        <p>Regal, hand-finished jewellery inspired by timeless heritage craftsmanship.</p>
+        <a class="btn">Shop the Collection</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="mdiv">۞</div>
+    <div class="head"><div class="ey">Handpicked for You</div><h2>Featured Pieces</h2></div>
+    <div class="products">
+      <a class="card"><div class="ph"><img src="https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=500&q=80"></div><h3>Golden Cascade Drops</h3><div class="price">PKR 2,499</div></a>
+      <a class="card"><div class="ph"><img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&q=80"></div><h3>Rose Quartz Earrings</h3><div class="price">PKR 1,599</div></a>
+      <a class="card"><div class="ph"><img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&q=80"></div><h3>Gold Tennis Bracelet</h3><div class="price">PKR 4,999</div></a>
+      <a class="card"><div class="ph"><img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=500&q=80"></div><h3>Crescent Moon Pendant</h3><div class="price">PKR 1,799</div></a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="brand mar">DIAMOND LOFT</div>
+    <div class="crest">۞</div>
+    <p>Elegance Crafted for You</p>
+  </footer>
+</body>
+</html>

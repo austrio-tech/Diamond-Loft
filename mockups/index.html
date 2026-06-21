@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diamond Loft — Style Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Jost', sans-serif; background: #14110d; color: #f4ece0; padding: 60px 24px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 500; text-align: center; margin-bottom: 8px; }
+  .sub { text-align: center; color: #b08d57; letter-spacing: 3px; text-transform: uppercase; font-size: 12px; margin-bottom: 50px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .card { display: block; text-decoration: none; color: inherit; border: 1px solid #3a342a; border-radius: 10px; overflow: hidden; background: #1c1812; transition: transform .2s, border-color .2s; }
+  .card:hover { transform: translateY(-4px); border-color: #b08d57; }
+  .swatch { height: 150px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 26px; letter-spacing: 1px; }
+  .card-body { padding: 20px 22px; }
+  .card-body h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; margin-bottom: 6px; }
+  .card-body p { color: #a99; font-size: 13px; line-height: 1.6; color: #b8ad9c; }
+  .tag { display:inline-block; margin-top:12px; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#b08d57; }
+  footer { text-align:center; margin-top:60px; color:#6b6356; font-size:13px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Diamond Loft</h1>
+    <p class="sub">Home Page · Style Directions</p>
+    <div class="grid">
+      <a class="card" href="01-modern-minimal.html">
+        <div class="swatch" style="background:#ffffff;color:#1a1a1a;">Aa</div>
+        <div class="card-body"><h2>1 · Modern Minimal</h2><p>Clean, lots of whitespace, sans-serif, near-monochrome with one soft accent. Calm and contemporary.</p><span class="tag">View mockup →</span></div>
+      </a>
+      <a class="card" href="02-classic-maison.html">
+        <div class="swatch" style="background:#f3ece0;color:#2b2b2b;">Aa</div>
+        <div class="card-body"><h2>2 · Classic Maison</h2><p>Restrained old-money luxury. Ivory, all-serif, hairline rules, sepia imagery. Timeless &amp; understated.</p><span class="tag">View mockup →</span></div>
+      </a>
+      <a class="card" href="03-art-deco.html">
+        <div class="swatch" style="background:#0e0e0e;color:#c9a96e;">Aa</div>
+        <div class="card-body"><h2>3 · Art Deco (1920s)</h2><p>Geometric gold lines, black &amp; ivory, symmetry, engraved display type. Glamorous fine-jewellery house.</p><span class="tag">View mockup →</span></div>
+      </a>
+      <a class="card" href="04-victorian.html">
+        <div class="swatch" style="background:#5b1a22;color:#e8cfa0;">Aa</div>
+        <div class="card-body"><h2>4 · Victorian Heritage</h2><p>Ornate gold filigree, parchment texture, burgundy, script accents. Romantic, decorative, old-world.</p><span class="tag">View mockup →</span></div>
+      </a>
+      <a class="card" href="05-mughal-heritage.html">
+        <div class="swatch" style="background:#0f3d2e;color:#d4af37;">Aa</div>
+        <div class="card-body"><h2>5 · Mughal / Heritage</h2><p>South-Asian royal feel: emerald &amp; maroon jewel tones, gold arches &amp; motifs. Rich and regal.</p><span class="tag">View mockup →</span></div>
+      </a>
+    </div>
+    <footer>Open each file in your browser. All are self-contained — share the folder with the client.</footer>
+  </div>
+</body>
+</html>

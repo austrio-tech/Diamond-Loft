@@ -1,22 +1,25 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Cormorant_Garamond, EB_Garamond } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { ThemeProvider, themeInitScript } from "@/context/ThemeProvider";
 import { STORE_INFO } from "@/lib/utils";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   variable: "--font-cormorant",
   display: "swap",
 });
 
-const jost = Jost({
+const ebGaramond = EB_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-jost",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-eb",
   display: "swap",
 });
 
@@ -39,11 +42,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
+    <html
+      lang="en"
+      className={`${cormorant.variable} ${ebGaramond.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Set theme before paint to avoid a flash of the wrong theme. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body suppressHydrationWarning>
-        <CartProvider>
-          <WishlistProvider>{children}</WishlistProvider>
-        </CartProvider>
+        <ThemeProvider>
+          <MotionConfig reducedMotion="user">
+            <CartProvider>
+              <WishlistProvider>{children}</WishlistProvider>
+            </CartProvider>
+          </MotionConfig>
+        </ThemeProvider>
       </body>
     </html>
   );
